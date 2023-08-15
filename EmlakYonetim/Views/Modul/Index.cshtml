@@ -1,0 +1,117 @@
+﻿@using EmlakYonetim.Models.ViewModels
+@model ModulViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center">Modül Listesi</h2>
+
+<div class="container" style="position:center">
+    <button style="margin-left:465px;" class="btn btn-success" onclick="toggleForm()">Yeni Modül Ekle</button>
+
+    <div id="formDiv" style="display: none;margin-top:15px; text-align:center">
+        <form method="post" action="@Url.Action("ModulEkle", "Modul")">
+            <div class="mb-2">
+                <label class="form-label">Modül Adı:</label>
+                <input type="text" class="form-control" name="ModulAdi">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Mülk Tipi:</label>
+                <select class="form-control" name="MulkTipiID">
+                    <option value="">Mülk Tipi Seçiniz.</option>
+                    @foreach (var mulkTipi in Model.MulkTipleri)
+                    {
+                        <option value="@mulkTipi.id">@mulkTipi.tipAdi</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Satış Tipleri</label>
+                <br />
+                @foreach (var satisTipleri in Model.SatisTipleri)
+                {
+                    <label for="SatisTipiIDler">@satisTipleri.satisTipiAdi</label>
+                    <input type="checkbox" name="SatisTipiIDler" value="@satisTipleri.id" />
+                }
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Değerler:</label>
+                <input type="text" class="form-control" name="Deger" placeholder="Kullanıcıdan input alacaksanız boş bırakınız, değilse modül özelliklerini ',' ile ayırınız. ">
+            </div>
+            <button type="submit" style="position:relative; top:25px;" class="btn btn-primary">Kaydet</button>
+        </form>
+    </div>
+    <div style="position:relative; padding:75px">
+        <table class="table table-hover" border="1">
+            <thead style="text-align:center">
+                <tr>
+                    <th>ID</th>
+                    <th>Modül Adı</th>
+                    <th>Modül Tipi</th>
+                    <th>İlişkili Olduğu Mülk Tipi</th>
+                    <th>İlişkili Olduğu Satış Tipi</th>
+                </tr>
+
+            </thead>
+            <tbody style="text-align:center">
+                @foreach (var modul in Model.MulkTipiModuller)
+                {
+                    var satisTipleri = Model.DahiliSatisTipleri.Where(x => x.modulID == modul.t_modul.id).Select(s => s.t_satisTipi).ToList();
+                    <tr>
+                        <td>@modul.t_modul.id</td>
+                        <td>@modul.t_modul.modulAdi</td>
+                        @if (modul.t_modul.degerler != null)
+                        {
+                            <td><strong>Dropdown seçimi </strong><br /> @modul.t_modul.degerler</td>
+                        }
+                        else
+                        {
+                            <td><strong>Değerler kullanıcı tarafından girilir.</strong></td>
+                        }
+                        <td>@modul.t_mulkTipi.tipAdi</td>
+                        <td>
+                            @if (satisTipleri.Count != 0)
+                            {
+                                foreach (var satisTipi in satisTipleri)
+                                {
+
+                                    @satisTipi.satisTipiAdi <br />
+
+                                }
+                            }
+                            else
+                            {
+                                <strong>Satış Tipi atanmamış.</strong>
+                            }
+
+
+                        </td>
+
+                        <td>
+                            <form method="post" action="@Url.Action("ModulDuzenle" , "Modul")">
+                                <button class="btn btn-outline-dark" name="ModulID" value="@modul.t_modul.id">DÜZENLE</button>
+                            </form>
+
+                        </td>
+
+                        <td>
+                            <form method="post" action="@Url.Action("ModulSil" , "Modul")">
+                                <button class="btn btn-outline-danger" name="ModulID" value="@modul.t_modul.id">SİL</button>
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function toggleForm() {
+        var formDiv = document.getElementById("formDiv");
+        formDiv.style.display = formDiv.style.display === "none" ? "block" : "none";
+    }
+</script>

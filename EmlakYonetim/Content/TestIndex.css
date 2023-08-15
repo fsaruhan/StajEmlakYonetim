@@ -1,0 +1,67 @@
+﻿/*ILAN DETAYININ CSS'LERI*/
+
+.vertical-line {
+    border-left: 1px solid #778899;
+    height: 500px;
+    width:0px;
+    position: relative;
+}
+
+.horizontal-line {
+    border-top: 1px solid #778899;
+    width: 750px;
+    height: 0px;
+    position: relative;
+}
+
+textarea {
+    resize: none;
+    
+    width: 700px;
+    height: 250px;
+    
+   
+}
+
+/*ILAN DUZENLE VIEWININ CSS'LERI*/
+
+
+.foto-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.foto-item {
+    margin-right: 10px;
+}
+
+.foto-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.foto-img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border: 2px solid transparent;
+}
+
+    .foto-img:hover {
+        border: 2px solid red;
+    }
+
+.foto-buttons {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: none;
+}
+
+.foto-wrapper:hover .foto-buttons {
+    display: block;
+}
+
+
+/**/

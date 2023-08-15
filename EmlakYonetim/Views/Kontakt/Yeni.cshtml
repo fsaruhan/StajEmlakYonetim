@@ -1,0 +1,102 @@
+﻿@model EmlakYonetim.Models.Entity.t_contact
+
+@{
+    ViewBag.Title = "Yeni";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var selectedContacts = (IEnumerable<EmlakYonetim.Models.Entity.t_contact>)ViewBag.SelectedContacts;
+    var organizasyonListesi = new SelectList(selectedContacts.Where(c => c.organizasyonMu), "id", "organizasyonAdi");
+    
+}
+
+<script>
+    function formGorunumDegistir() {
+        var checkbox = document.getElementById("organizasyonmu");
+        var kisiBilgileriDiv = document.getElementById("kisiBilgileri");
+        var organizasyonBilgileriDiv = document.getElementById("organizasyonBilgileri");
+
+        if (checkbox.checked) {
+            kisiBilgileriDiv.style.display = "none";
+            organizasyonBilgileriDiv.style.display = "block";
+        } else {
+            kisiBilgileriDiv.style.display = "block";
+            organizasyonBilgileriDiv.style.display = "none";
+        }
+    }
+</script>
+
+<input type="checkbox" id="organizasyonmu" onchange="formGorunumDegistir()" /> <label>Organizasyon</label>
+<div id="kisiBilgileri">
+    @using (Html.BeginForm("Yeni", "Kontakt", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.Ulke)
+            @Html.TextBoxFor(m => m.Ulke, new { @class = "form-control" })
+            @Html.LabelFor(m => m.isim, "Adınız")
+            @Html.TextBoxFor(m => m.isim, new { @class = "form-control" })
+            @Html.LabelFor(m => m.soyAdi, "Soy Adınız")
+            @Html.TextBoxFor(m => m.soyAdi, new { @class = "form-control" })
+            @Html.LabelFor(m => m.organizasyonAtama, "Organizasyon Seçin")
+            @Html.DropDownListFor(m => m.organizasyonAtama, organizasyonListesi, "Seçiniz", new { @class = "form-control" })
+            @Html.LabelFor(m => m.isTelefonu, "İş Telefonu")
+            @Html.TextBoxFor(m => m.isTelefonu, new { @class = "form-control" })
+            @Html.LabelFor(m => m.isTelefonu2, "İş Telefonu 2")
+            @Html.TextBoxFor(m => m.isTelefonu2, new { @class = "form-control" })
+            @Html.LabelFor(m => m.cepTelefonu, "Cep Telefonu")
+            @Html.TextBoxFor(m => m.cepTelefonu, new { @class = "form-control" })
+            @Html.Label("Yetki Seçiniz")
+            @foreach (var rol in ViewBag.Roller)
+            {
+                <div class="form-check">
+                    <input type="checkbox" name="secilenRoller" value="@rol.id" class="form-check-input" />
+                    <label class="form-check-label">@rol.rolAdi</label>
+                </div>
+            }
+
+            @Html.LabelFor(m => m.Gorsel, "Kontakt Yapılan Kişi Fotoğrafı")
+            <input type="file" name="foto" style="margin-top:5px" />
+        </div>
+        <input type="submit" value="Kişiyi Ekle" class="btn btn-success" style="margin-top: 10px" />
+    }
+
+
+
+</div>
+<div id="organizasyonBilgileri" style="display: none;">
+    @using (Html.BeginForm("Yeni", "Kontakt", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.Ulke)
+            @Html.TextBoxFor(m => m.Ulke, new { @class = "form-control" })
+            @Html.LabelFor(m => m.organizasyonAdi, "Organizasyon Adı")
+            @Html.TextBoxFor(m => m.organizasyonAdi, new { @class = "form-control" })
+            @Html.LabelFor(m => m.vergiNo, "Vergi Numarası")
+            @Html.TextBoxFor(m => m.vergiNo, new { @class = "form-control" })
+            @Html.LabelFor(m => m.kayitNo, "Kayıt Numarası")
+            @Html.TextBoxFor(m => m.kayitNo, new { @class = "form-control" })
+            @Html.LabelFor(m => m.website, "Web Sitesi")
+            @Html.TextBoxFor(m => m.website, new { @class = "form-control" })
+            @Html.LabelFor(m => m.description, "Organizasyonla İlgili Açıklama")
+            @Html.TextAreaFor(m => m.description, new { @class = "form-control", rows = 4 })
+            @Html.LabelFor(m => m.isTelefonu, "İş Telefonu")
+            @Html.TextBoxFor(m => m.isTelefonu, new { @class = "form-control" })
+            @Html.LabelFor(m => m.isTelefonu2, "İş Telefonu 2")
+            @Html.TextBoxFor(m => m.isTelefonu2, new { @class = "form-control" })
+            @Html.LabelFor(m => m.cepTelefonu, "Cep Telefonu")
+            @Html.TextBoxFor(m => m.cepTelefonu, new { @class = "form-control" })
+            @Html.Label("Yetki Seçiniz")
+            @foreach (var rol in ViewBag.Roller)
+            {
+                <div class="form-check">
+                    <input type="checkbox" name="secilenRoller" value="@rol.id" class="form-check-input" />
+                    <label class="form-check-label">@rol.rolAdi</label>
+                </div>
+            }
+
+            @Html.LabelFor(m => m.Gorsel, "Kontakt Yapılan Kişi Fotoğrafı")
+            <input type="file" name="foto" style="margin-top:5px" />
+
+        </div>
+        <input type="submit" value="Organizasyonu Ekle" class="btn btn-success" style="margin-top: 10px">
+    }
+
+</div>

@@ -1,0 +1,27 @@
+﻿@model EmlakYonetim.Models.Entity.t_mulk
+
+@{
+    ViewBag.Title = "Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link href="~/Content/Proje/Ekle-cshtml.css" rel="stylesheet" />
+</head>
+<div id="form-container"    >
+    <div id="form-content">
+        <h2>Mülk Tipi ve Emlak Tipini Seçiniz</h2>
+        <form action="/Mulk/Ekle" method="post">
+            <div>
+                <div>
+                    <label for="mulkTipi">Mülk Tipi:</label>
+                    @Html.DropDownListFor(model => model.mulkTipiID, ViewBag.Mulktipleri as SelectList, "Seçiniz")
+                </div>
+                <div>
+                    <label for="satisTipi">Satış Tipi:</label>
+                    @Html.DropDownListFor(model => model.satisTipiID, ViewBag.SatisTipleri as SelectList, "Seçiniz")
+                </div>
+                <button type="submit">Devam Et</button>
+            </div>
+        </form>
+    </div>
+</div>

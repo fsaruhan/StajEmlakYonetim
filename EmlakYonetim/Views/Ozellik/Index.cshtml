@@ -1,0 +1,195 @@
+﻿@using EmlakYonetim.Models.Entity;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 style="text-align:center">Mülk Özellikleri</h3>
+
+
+<div class="container" style="text-align:center">
+    <button type="button" class="btn btn-warning" id="addFeatureBtn">Ana Özellik Ekle</button>
+    <form method="post" action="@Url.Action("AnaOzellikEkle", "Ozellik")">
+        <div class="input-container" id="inputContainer" style="display:none; padding-top:20px">
+            <input type="text" name="AnaOzellikAdi" class="form-control mb-2" id="featureInput" placeholder="Ana özellik adını giriniz." style="width:500px; padding-left:175px; position:relative; top:-5px;left:292px">
+            <select style="text-align:center; width:150px" name="MulkTipiID">
+                @foreach (var mt in Model.MulkTipi)
+                {
+                    <option value="@mt.id">@mt.tipAdi</option>
+                }
+            </select>
+            <br />
+
+            <button type="submit" class="btn btn-success" style="position:relative; top:5px;" id="saveBtn">Kaydet</button>
+        </div>
+    </form>
+</div>
+<div style="position:relative; padding:100px;">
+
+    <div class="container col-lg">
+        <div class="row">
+
+            @foreach (var anaozellik in Model.AnaOzellikler)
+            {
+                <div class="col-sm-4 mb-3">
+                    <!-- Her card için ayrı bir kolon sınıfı ekleyin -->
+                    <div class="card">
+                        <div class="card-header bg-success" style="text-align:center">
+                            <h4>AnaÖzellik: <br /> <strong>@anaozellik.ozellikAdi</strong></h4>
+
+                            <div style="display: inline-flex; gap: 10px;">
+                                <form method="post" action="@Url.Action("AnaOzellikKaldir","Ozellik")">
+                                    <button class="btn btn-danger" style="width:100px; font-size:10px" name="AnaOzellikID" value="@anaozellik.id">Ana Özelliği Kaldır</button>
+                                </form>
+                                <button class="btn btn-secondary" style="width:100px; font-size:9px" id="anaOzellikDuzenle_@anaozellik.id" data-anaozellikid="@anaozellik.id">Ana Özelliği Düzenle</button>
+                            </div>
+
+                            <div style="display:none" class="anaOzellikContainer" id="anaOzellikContainer_@anaozellik.id">
+                                <form method="post" action="@Url.Action("AnaOzellikDuzenle","Ozellik")">
+                                    <input class="form-control" type="text" style="position:relative; top:5px; left:40px; width:150px;  text-align:center; font-size:12px" name="AnaOzellikAdi" placeholder="Yeni Ana Özellik Adı" />
+                                    <button class="btn-dark" style="position:relative; top:10px;" name="AnaOzellikID" value="@anaozellik.id" type="submit">Kaydet</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 style="text-align:center; color:grey">
+                                <strong>
+                                    Alt Özellikler<br />
+                                    <button style="font-size:18px;" type="button" class="toggleInput">Alt Özellik Ekle</button>
+                                </strong>
+                            </h3>
+                            <div class="inputContainer" style="display: none;">
+                                <form method="post" action="@Url.Action("AltOzellikEkle", "Ozellik")">
+                                    <input type="text" name="altOzellikAdi" placeholder="Alt Özellik Adı">
+                                    <button type="submit" class="bg-primary" name="AnaOzellikID" value="@anaozellik.id">Kaydet</button>
+                                </form>
+                            </div>
+
+                            <hr />
+
+                            @foreach (var ozellik in Model.Ozellikler)
+                            {
+                                if (ozellik.ozellikAtama == anaozellik.id)
+                                {<form method="post" action="@Url.Action("Sil", "Ozellik")">
+                                        <div style="text-align:center">
+                                            <h6>@ozellik.ozellikAdi</h6>
+                                            <div><button type="submit" style="text-align:right" class="bg-danger" name="OzellikID" value="@ozellik.id">Sil</button></div>
+                                        </div>
+                                    </form>
+                                }
+                            }
+                        </div>
+                        <div class="card-footer" style="text-align:center">
+                            @foreach (var mulkTipi in Model.MulkTipiOzellik)
+                            {
+                                if (mulkTipi.ozellikID == anaozellik.id)
+                                {
+                                    <h4 style="text-align:center"><strong>Mülk Tipi: </strong>@mulkTipi.t_mulkTipi.tipAdi</h4>
+
+                                    <button class="editButton" onclick="showDropdown(this)" data-anaozellikid="@anaozellik.id" data-toggle="modal" data-target="#myModal">Düzenle</button>
+
+
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButtons = document.querySelectorAll(".toggleInput");
+        const inputContainers = document.querySelectorAll(".inputContainer");
+
+        toggleButtons.forEach((button, index) => {
+            button.addEventListener("click", function () {
+                const inputContainer = inputContainers[index];
+                inputContainer.style.display = inputContainer.style.display === "none" ? "block" : "none";
+            });
+        });
+        const anaOzellikDuzenleBtns = document.querySelectorAll('[id^="anaOzellikDuzenle"]');
+        anaOzellikDuzenleBtns.forEach((button) => {
+            button.addEventListener('click', () => {
+                const anaOzellikID = button.getAttribute('data-anaozellikid');
+                const anaOzellikContainer = document.querySelector(`#anaOzellikContainer_${anaOzellikID}`);
+                if (anaOzellikContainer.style.display === 'none') {
+                    anaOzellikContainer.style.display = 'block';
+                } else {
+                    anaOzellikContainer.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function showDropdown(button) {
+        var anaOzellikID = button.getAttribute("data-anaozellikid");
+        document.getElementById("anaOzellikID").value = anaOzellikID;
+    }
+
+    function submitForm() {
+        var form = document.getElementById("myModalForm");
+        var mulkTipiID = document.getElementById("mulkTipiDropdown").value;
+        console.log("AnaOzellikID: ", form.AnaOzellikID.value);
+        console.log("MulkTipiID: ", mulkTipiID);
+        form.submit();
+    }
+</script>
+<script>
+
+    const addFeatureBtn = document.getElementById('addFeatureBtn');
+    const inputContainer = document.getElementById('inputContainer');
+
+    addFeatureBtn.addEventListener('click', () => {
+        if (inputContainer.style.display === 'none') {
+            inputContainer.style.display = 'block';
+        } else {
+            inputContainer.style.display = 'none';
+        }
+    });
+</script>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Mülk Tipini Düzenle</h4>
+            </div>
+            <div class="modal-body">
+                <form id="myModalForm" method="post" action="@Url.Action("OzellikMulkTipiGuncelle", "Ozellik")">
+                    <input type="hidden" id="anaOzellikID" value="" name="AnaOzellikID" />
+                    <select id="mulkTipiDropdown" name="MulkTipiID">
+                        @foreach (var mt in Model.MulkTipi)
+                        {
+                            <option value="@mt.id">@mt.tipAdi</option>
+                        }
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" onclick="submitForm()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}-->

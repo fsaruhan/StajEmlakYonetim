@@ -1,0 +1,81 @@
+﻿@using EmlakYonetim.Models.ViewModels;
+@model ModulViewModel
+@{
+    ViewBag.Title = "ModulDuzenle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center">Modul Duzenle</h2>
+
+<div class="container" style="text-align:center">
+    <div class="mb-5"></div>
+
+    <form method="post" action="@Url.Action("ModulKaydet","Modul")">
+        <div class="mb-3 mt-3">
+            <label class="form-label">Modül Adı:<strong>@Model.ModulAdi</strong></label>
+            <input type="text" class="form-control" placeholder="Modül adınız: @Model.ModulAdi. Değiştirmek istemiyorsanız boş bırakınız." name="ModulAdi">
+        </div>
+        <div class="mb-5"></div>
+        <div class="mb-3">
+            <label class="form-label">
+                Modülün İlişkili Olduğu Mülk Tipi:<strong style="font-size:25px"> @Model.MulkTipiAdi. </strong>Mülk tipini değiştirmek istemiyorsanız
+                <strong>"Mülk Tipiniz: @Model.MulkTipiAdi"</strong>
+                seçeneğinde bırakınız.
+            </label>
+            <select id="mulkTipiSelect" name="MulkTipiID" class="form-control">
+                <option value="">Mülk Tipiniz: @Model.MulkTipiAdi</option>
+                @foreach (var mulkTipi in Model.MulkTipleri)
+                {
+                    <option value="@mulkTipi.id">@mulkTipi.tipAdi</option>
+                }
+            </select>
+            <div class="mb-5"></div>
+            @foreach (var satisTipi in Model.SatisTipleri)
+            {
+
+                bool satisTipiSecilmis = Model.DahiliSatisTipleri.Any(d => d.satisTipiID == satisTipi.id);
+
+
+
+                <label for="SatisTipiIDler">@satisTipi.satisTipiAdi</label>
+                <input type="checkbox" name="SatisTipiIDler" value="@satisTipi.id" @(satisTipiSecilmis ? "checked" : "") />
+
+            }
+
+
+            <div class="mb-5"></div>
+            @if (Model.Deger != null)
+            {
+                <label class="form-label">
+                    Bu modülün modeli <strong>DROPDOWN</strong> modeli. Eğer kullanıcıdan dropdown yerine <strong>INPUT</strong> almak istiyorsanız,
+                    verilerinizi tamamen silin ve formu boş bırakın. <strong>','</strong> işaretini kullanarak özelliklerinizi ayırabilirsiniz.
+                </label>
+                <input type="text" class="form-control" value="@Model.Deger" name="DegerDrop">
+
+            }
+            else
+            {
+                <label class="form-label">
+                    Bu modülün modeli <strong>INPUT (VERİ)</strong> modeli. Kullanıcıdan veri almak istiyorsanız boş bırakınız. Değilse '<strong>
+                        ,
+                    </strong>' işaretini değerleriniz arasında koyarak onları ayırabilir ve <strong>dropdown listesi</strong>
+                    olarak gösterebilirsiniz.
+                </label>
+
+                <input type="text" class="form-control" name="DegerInput" placeholder="Dropdown için değer giriniz, değilse boş bırakınız.">
+            }
+            <input type="hidden" name="ModulID" value="@Model.ModulID" />
+        </div>
+        <button type="submit" onclick="onaylamaGoster()" class="btn btn-primary" >Değişiklikleri Kaydet</button>
+    </form>
+
+
+</div>
+<script>
+    function onaylamaGoster() {
+        var onaylandi = confirm("Yaptığınız değişiklikleri onaylıyor musunuz?");
+        if (onaylandi) {
+            alert("Değişiklikler başarıyla kayıt edildi. Modül sayfasına yönlendiriliyorsunuz...");
+        }
+    }
+</script>

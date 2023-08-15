@@ -1,0 +1,162 @@
+﻿@using EmlakYonetim.Models.ViewModels
+@model MulkDuzenleViewModel
+@{
+    ViewBag.Title = "IlanDuzenle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 style="text-align:center">@Model.MulkID - numaralı ilanın düzenleme sayfası</h2>
+
+<div class="container">
+    <hr />
+    <h3 style="text-align:center">Fotograflar</h3>
+    <hr />
+    <div class="row">
+        <div class="foto-container">
+            @{
+                var i = 0;
+                foreach (var foto in Model.Fotograflar)
+                {
+                    bool isAnaFoto = i == 0;
+                    <div class="foto-item">
+                        <div class="foto-wrapper">
+                            <img src="@Url.Content(foto.imagePath)" class="foto-img" alt="Foto">
+                            <div class="foto-buttons">
+                                <form method="post" action="@Url.Action("TekFotoSil", "Mulk")">
+                                    <input type="hidden" name="FotoID" value="@foto.id" />
+                                    <button class="btn btn-danger btn-sm mt-2">Sil</button>
+                                </form>
+                                <form method="post" action="@Url.Action("AnaFotografiDegistir", "Mulk")">
+                                    @if (!isAnaFoto)
+                                    {
+                                        <input type="hidden" name="MulkID" value="@Model.MulkID" />
+                                        <input type="hidden" name="FotoID" value="@foto.id" />
+                                        <button class="btn btn-primary btn-sm mt-2" type="submit">Ana Fotoğraf Yap</button>
+                                    }
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    i++;
+                }
+            }
+        </div>
+    </div>
+
+    <div class="mt-4" style="position:relative; text-align:center;">
+        <h4>Fotoğraf Eklemek İçin:</h4>
+        <form method="post" enctype="multipart/form-data" action="@Url.Action("IlanFotoEkle", "Mulk")">
+            <input type="hidden" name="MulkID" value="@Model.MulkID" />
+            <input type="file" id="fotoEkle" name="Fotograflar" accept="image/*" multiple>
+            <br />
+            <button style="position:relative; right:100px;" type="submit" class="btn btn-primary mt-2">Fotoğraf Ekle</button>
+        </form>
+        <form method="post" enctype="multipart/form-data" action="@Url.Action("IlanFotolariSil", "Mulk")">
+            <input type="hidden" name="MulkID" value="@Model.MulkID" />
+            <button style="position:relative; left:65px; bottom:46px;" type="submit" class="btn btn-danger mt-2">Fotoğrafların Hepsini Sil</button>
+        </form>
+    </div>
+    <hr />
+    <h4 style="text-align:center">Mülk Bilgileri</h4>
+    <hr />
+    <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
+
+        <label>Mülk Başlığı:</label>
+        <input class="form-control" style="text-align:center;" value="@Model.Mulk.mulkBaslik" name="MulkBaslik" />
+        <label>Mülk Açıklaması:</label>
+        <textarea style="height:150px; text-align:center;" class="form-control" name="MulkAciklama">@Model.Mulk.aciklama</textarea>
+
+    </div>
+    <hr />
+    <h4 style="text-align:center">Mülk Özellikleri</h4>
+    <hr />
+    <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
+
+        @foreach (var mulkTipiOzellik in Model.MulkTipiOzellik)
+        {
+            <h3>@mulkTipiOzellik.t_ozellik.ozellikAdi</h3>
+
+            foreach (var ozellik in Model.TumOzellikler)
+            {
+                bool ozellikSecilmis = Model.MulkOzellikler.Any(d => d.id == ozellik.id);
+                if (ozellik.ozellikAtama == mulkTipiOzellik.t_ozellik.id)
+                {
+                    <label for="TumOzellikler">@ozellik.ozellikAdi</label>
+                    <input type="checkbox" name="TumOzellikler" value="@ozellik.id" @(ozellikSecilmis ? "checked" : "") />
+                }
+
+            }
+            <hr />
+        }
+    </div>
+
+    <hr />
+    <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
+        
+            @foreach (var modul in Model.TumModuller)
+            {
+                var dahiliModuller = Model.MulkModuller.FirstOrDefault(x => x.modulID == modul.id);
+                
+                if (dahiliModuller != null && modul.id == dahiliModuller.modulID)
+                {
+                    if (modul.degerler != null)
+                    {
+                        string[] degerler = modul.degerler.Split(',');
+                        <label>@modul.modulAdi:</label>
+                        <select name="SecilenModuller">
+                            <option value="">@dahiliModuller.deger</option>
+                            @foreach (var deger in degerler)
+                            {
+                                if (dahiliModuller.deger != deger)
+                                {
+                                    <option value="@deger">@deger</option>
+                                }
+
+                            }
+                        </select>
+                        <input type="hidden" value="@modul.id" name="DropDownModulID" />
+                        <br />
+                    }
+                    else
+                    {
+                        <label for="GirilenModuller">@modul.modulAdi:</label>
+                        <input type="text" class="form-control" name="GirilenModuller" value="@dahiliModuller.deger" style="width:150px; text-align:center; margin-left:446px;" />
+                        <input type="hidden" value="@modul.id" name="InputModulID" />
+                        <br />
+                    }
+                }
+                else 
+                {
+                    if (modul.degerler != null)
+                    {
+                        string[] degerler = modul.degerler.Split(',');
+                        <label>@modul.modulAdi:</label>
+                        <select name="SecilenModuller">
+                            <option value="">Yeni Modül, seçiniz.</option>
+                            @foreach (var deger in degerler)
+                            {
+                              
+                                    <option value="@deger">@deger</option>
+                                
+
+                            }
+                        </select>
+                        <input type="hidden" value="@modul.id" name="DropDownModulID" />
+                        <br />
+                    }
+                    else
+                    {
+                        <label for="GirilenModuller">@modul.modulAdi:</label>
+                        <input type="text" class="form-control" name="GirilenModuller" value="Yeni modül. Değer giriniz." style="width:150px; text-align:center; margin-left:446px;" />
+                        <input type="hidden" value="@modul.id" name="InputModulID" />
+                        <br />
+                    }
+                }
+                 
+            }
+        
+        <hr />
+    </div>
+</div>
+
+
+

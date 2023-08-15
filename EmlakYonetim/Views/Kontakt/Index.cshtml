@@ -1,0 +1,72 @@
+﻿@using EmlakYonetim.Models.Entity
+@model List<t_contact>
+@{
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    td, th {
+        text-align: center;
+        vertical-align: middle;
+        padding: 5px;
+    }
+</style>
+<h1><a href="/Kontakt/Yeni" class="btn btn-success">Yeni Kontakt Ekle</a></h1>
+<h2>Kontakt Listesi</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>İsim</th>
+            <th>Kontakt Detay</th>
+            <th>Kontakt Güncelle</th>
+            <th>Kontakt Sil</th>
+        </tr>
+    </thead>
+    @foreach (var bilgi in Model)
+    {
+        if (bilgi.isim != null)
+        {
+            <tr>
+                <td>@bilgi.id</td>
+                <td>@bilgi.isim @bilgi.soyAdi</td>
+                <td><a class="btn btn-primary" href="/Kontakt/Detay/@bilgi.id">Detay</a></td>
+                <td><a class="btn btn-info" href="/Kontakt/Guncelle/@bilgi.id">Guncelle</a></td>
+                <td><a class="btn btn-danger" href="#" onclick="silmeyiOnayla(@bilgi.id)">Sil</a></td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>@bilgi.id</td>
+                <td>@bilgi.organizasyonAdi</td>
+                <td><a class="btn btn-primary" href="/Kontakt/Detay/@bilgi.id">Detay</a></td>
+                <td><a class="btn btn-info" href="/Kontakt/Guncelle/@bilgi.id">Guncelle</a></td>
+                <td><a class="btn btn-danger" href="#" onclick="silmeyiOnayla(@bilgi.id)">Sil</a></td>
+            </tr>
+
+        }
+    }
+    <script>
+        function silmeyiOnayla(contactId) {
+            if (confirm("Bu kişiyi silmek istediğinize emin misiniz?")) {
+         
+                $.post("/Kontakt/Sil", { contactId: contactId })
+                    .done(function (response) {
+                        alert("Başarıyla silindi.")
+                        location.reload();
+                    })
+                    .fail(function (error) {
+                        alert("Silme işlemi gerçekleşmedi.")
+                        console.log(error);
+                    });
+
+            }
+        }
+    </script>
+</table>
+

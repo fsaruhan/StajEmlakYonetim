@@ -1,0 +1,62 @@
+﻿@using EmlakYonetim.Models.ViewModels
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card" style="width: 18rem;">
+                    @if (!string.IsNullOrEmpty(item.FotoUrl))
+                    {
+                        <img class="card-img-top" src="@Url.Content(item.FotoUrl)" width="286" height="180" alt="Card image cap">
+                    }
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @if (item.Baslik.Length > 30)
+                        {
+                            @(item.Baslik.Substring(0,27) + "...")
+                        }
+                        else
+                        {
+                            @item.Baslik
+                        }
+                    </h5>
+                    <p class="card-text">
+                        @if (item.Aciklama.Length > 100)
+                        {
+                            @(item.Aciklama.Substring(0,97) + "...")
+                        }
+                        else
+                        {
+                            @item.Aciklama
+                        }
+                    </p>
+                    <hr />
+
+                    <p style="text-align:center;" class="card-text">
+                        <strong>Fiyat:</strong> @formatNumber(decimal.Parse(item.Fiyat))
+                        <span style="position:relative; right:5px; top:5px;" class="material-symbols-outlined">currency_lira</span>
+                    </p>
+                    <p style="text-align:center;" class="card-text"><strong>Satış Tipi:</strong> @item.SatisTipi</p>
+                    <hr />
+                    <!-- ------------------------- -->
+                    <a style="text-align:center;" href="@Url.Action("IlanDetaylar","Mulk", new {mulkID = item.MulkId })" name="MulkID" class="btn btn-primary">Mülk Detayına Git</a>
+                    <a style="text-align:center;" href="@Url.Action("IlanDuzenle","Mulk", new {mulkID = item.MulkId })" name="MulkID" class="btn btn-success">Düzenle</a>
+                </div>
+                </div>
+            </div>
+        }  
+    </div>
+</div>
+@functions {
+    string formatNumber(decimal number)
+    {
+        return string.Format("{0:N0}", number);
+    }
+}

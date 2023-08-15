@@ -1,0 +1,1719 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="t_adres">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="adresAdi" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="adresAciklamasi" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sehir" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ilce" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="postaKodu" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_contact">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ulke" Type="int" />
+          <Property Name="isim" Type="varchar" MaxLength="25" />
+          <Property Name="soyAdi" Type="varchar" MaxLength="25" />
+          <Property Name="organizasyonAdi" Type="varchar" MaxLength="25" />
+          <Property Name="vergiNo" Type="int" />
+          <Property Name="kayitNo" Type="int" />
+          <Property Name="website" Type="varchar" MaxLength="20" />
+          <Property Name="description" Type="varchar" MaxLength="255" />
+          <Property Name="organizasyonAtama" Type="int" Nullable="false" />
+          <Property Name="e-mail" Type="varchar" MaxLength="50" />
+          <Property Name="e-mail2" Type="varchar" MaxLength="50" />
+          <Property Name="isTelefonu" Type="int" />
+          <Property Name="isTelefonu2" Type="int" />
+          <Property Name="cepTelefonu" Type="int" />
+          <Property Name="adresID" Type="int" />
+          <Property Name="tercihEdilenIletisim" Type="int" />
+          <Property Name="yetkiGrubuID" Type="int" />
+          <Property Name="organizasyonMu" Type="bit" Nullable="false" />
+          <Property Name="Gorsel" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="t_contactDosyalari">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="contactID" Type="int" Nullable="false" />
+          <Property Name="contactDosyalari" Type="varbinary" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_iletisimIzinKayit">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="iletisimIzinleriID" Type="int" Nullable="false" />
+          <Property Name="contactID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_iletisimIzinleri">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="izinAdi" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_iletisimStatusu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="iletisimAdi" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_kampanyalar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kampanyaAdi" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_kullanici">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="kullaniciAdi" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sifre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="yetkiGrubu" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_lead">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="contactID" Type="int" Nullable="false" />
+          <Property Name="iletisimStatusuID" Type="int" Nullable="false" />
+          <Property Name="mulkSahibi" Type="int" Nullable="false" />
+          <Property Name="sorguTarihi" Type="date" Nullable="false" />
+          <Property Name="gelecekRandevu" Type="date" Nullable="false" />
+          <Property Name="sourceDetayID" Type="int" Nullable="false" />
+          <Property Name="mulkTipiID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_modul">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="modulAdi" Type="varchar" MaxLength="25" />
+          <Property Name="degerler" Type="varchar" MaxLength="50" />
+          <Property Name="tur" Type="int" />
+        </EntityType>
+        <EntityType Name="t_mulk">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mulkBaslik" Type="varchar(max)" />
+          <Property Name="aciklama" Type="varchar(max)" />
+          <Property Name="fiyat" Type="varchar" MaxLength="50" />
+          <Property Name="mulkTipiID" Type="int" />
+          <Property Name="satisTipiID" Type="int" />
+          <Property Name="adresID" Type="int" />
+        </EntityType>
+        <EntityType Name="t_mulkAdres">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sokak" Type="varchar(max)" />
+          <Property Name="cadde" Type="varchar(max)" />
+          <Property Name="apartmanNo" Type="varchar" MaxLength="50" />
+          <Property Name="il" Type="varchar" MaxLength="50" />
+          <Property Name="ilce" Type="varchar" MaxLength="50" />
+          <Property Name="ulke" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="t_mulkIMGs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mulkID" Type="int" />
+          <Property Name="imagePath" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="t_mulkModul">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mulkID" Type="int" Nullable="false" />
+          <Property Name="modulID" Type="int" />
+          <Property Name="deger" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="t_mulkOzellik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mulkID" Type="int" />
+          <Property Name="ozellikID" Type="int" />
+        </EntityType>
+        <EntityType Name="t_mulkTipi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipAdi" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="t_mulkTipiModul">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mulktipiID" Type="int" />
+          <Property Name="modulID" Type="int" />
+        </EntityType>
+        <EntityType Name="t_mulkTipiOzellik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mulkTipiID" Type="int" />
+          <Property Name="ozellikID" Type="int" />
+        </EntityType>
+        <EntityType Name="t_ozellik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ozellikAdi" Type="varchar" MaxLength="50" />
+          <Property Name="ozellikAtama" Type="int" />
+        </EntityType>
+        <EntityType Name="t_roller">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rolAdi" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_rolTablosu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="contactID" Type="int" Nullable="false" />
+          <Property Name="rollerID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_satisTipi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="satisTipiAdi" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="t_satisTipiModul">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="satisTipiID" Type="int" Nullable="false" />
+          <Property Name="modulID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_tercihEdilenIletisim">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tercihEdilenIletisimAdi" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="t_uyrukUlke">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="uyrukAdi" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_yetkiGrubu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yetkiGrubu" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_t_contact_t_adres">
+          <End Role="t_adres" Type="Self.t_adres" Multiplicity="0..1" />
+          <End Role="t_contact" Type="Self.t_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_adres">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contact">
+              <PropertyRef Name="adresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_contact_t_tercihEdilenIletisim">
+          <End Role="t_tercihEdilenIletisim" Type="Self.t_tercihEdilenIletisim" Multiplicity="0..1" />
+          <End Role="t_contact" Type="Self.t_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_tercihEdilenIletisim">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contact">
+              <PropertyRef Name="tercihEdilenIletisim" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_contact_t_uyrukUlke">
+          <End Role="t_uyrukUlke" Type="Self.t_uyrukUlke" Multiplicity="0..1" />
+          <End Role="t_contact" Type="Self.t_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_uyrukUlke">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contact">
+              <PropertyRef Name="Ulke" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_contact_t_yetkiGrubu">
+          <End Role="t_yetkiGrubu" Type="Self.t_yetkiGrubu" Multiplicity="0..1" />
+          <End Role="t_contact" Type="Self.t_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_yetkiGrubu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contact">
+              <PropertyRef Name="yetkiGrubuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_contactDosyalari_t_contact">
+          <End Role="t_contact" Type="Self.t_contact" Multiplicity="1" />
+          <End Role="t_contactDosyalari" Type="Self.t_contactDosyalari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contactDosyalari">
+              <PropertyRef Name="contactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_iletisimIzinKayit_t_contact">
+          <End Role="t_contact" Type="Self.t_contact" Multiplicity="1" />
+          <End Role="t_iletisimIzinKayit" Type="Self.t_iletisimIzinKayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_iletisimIzinKayit">
+              <PropertyRef Name="contactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_iletisimIzinKayit_t_iletisimIzinleri">
+          <End Role="t_iletisimIzinleri" Type="Self.t_iletisimIzinleri" Multiplicity="1" />
+          <End Role="t_iletisimIzinKayit" Type="Self.t_iletisimIzinKayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_iletisimIzinleri">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_iletisimIzinKayit">
+              <PropertyRef Name="iletisimIzinleriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_kullanici_t_contact">
+          <End Role="t_contact" Type="Self.t_contact" Multiplicity="1" />
+          <End Role="t_kullanici" Type="Self.t_kullanici" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_kullanici">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_kullanici_t_yetkiGrubu">
+          <End Role="t_yetkiGrubu" Type="Self.t_yetkiGrubu" Multiplicity="1" />
+          <End Role="t_kullanici" Type="Self.t_kullanici" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_yetkiGrubu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_kullanici">
+              <PropertyRef Name="yetkiGrubu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulk_t_mulkAdres">
+          <End Role="t_mulkAdres" Type="Self.t_mulkAdres" Multiplicity="0..1" />
+          <End Role="t_mulk" Type="Self.t_mulk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulkAdres">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulk">
+              <PropertyRef Name="adresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulk_t_mulkTipi">
+          <End Role="t_mulkTipi" Type="Self.t_mulkTipi" Multiplicity="0..1" />
+          <End Role="t_mulk" Type="Self.t_mulk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulkTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulk">
+              <PropertyRef Name="mulkTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulk_t_satisTipi">
+          <End Role="t_satisTipi" Type="Self.t_satisTipi" Multiplicity="0..1" />
+          <End Role="t_mulk" Type="Self.t_mulk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_satisTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulk">
+              <PropertyRef Name="satisTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkIMGs_t_mulk">
+          <End Role="t_mulk" Type="Self.t_mulk" Multiplicity="0..1" />
+          <End Role="t_mulkIMGs" Type="Self.t_mulkIMGs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulk">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkIMGs">
+              <PropertyRef Name="mulkID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkModul_t_modul">
+          <End Role="t_modul" Type="Self.t_modul" Multiplicity="0..1" />
+          <End Role="t_mulkModul" Type="Self.t_mulkModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_modul">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkModul">
+              <PropertyRef Name="modulID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkModul_t_mulk">
+          <End Role="t_mulk" Type="Self.t_mulk" Multiplicity="1" />
+          <End Role="t_mulkModul" Type="Self.t_mulkModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulk">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkModul">
+              <PropertyRef Name="mulkID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkOzellik_t_mulk">
+          <End Role="t_mulk" Type="Self.t_mulk" Multiplicity="0..1" />
+          <End Role="t_mulkOzellik" Type="Self.t_mulkOzellik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulk">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkOzellik">
+              <PropertyRef Name="mulkID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkOzellik_t_ozellik">
+          <End Role="t_ozellik" Type="Self.t_ozellik" Multiplicity="0..1" />
+          <End Role="t_mulkOzellik" Type="Self.t_mulkOzellik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_ozellik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkOzellik">
+              <PropertyRef Name="ozellikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkTipiModul_t_modul">
+          <End Role="t_modul" Type="Self.t_modul" Multiplicity="0..1" />
+          <End Role="t_mulkTipiModul" Type="Self.t_mulkTipiModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_modul">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkTipiModul">
+              <PropertyRef Name="modulID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkTipiModul_t_mulkTipi">
+          <End Role="t_mulkTipi" Type="Self.t_mulkTipi" Multiplicity="0..1" />
+          <End Role="t_mulkTipiModul" Type="Self.t_mulkTipiModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulkTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkTipiModul">
+              <PropertyRef Name="mulktipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkTipiOzellik_t_mulkTipi">
+          <End Role="t_mulkTipi" Type="Self.t_mulkTipi" Multiplicity="0..1" />
+          <End Role="t_mulkTipiOzellik" Type="Self.t_mulkTipiOzellik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulkTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkTipiOzellik">
+              <PropertyRef Name="mulkTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkTipiOzellik_t_ozellik">
+          <End Role="t_ozellik" Type="Self.t_ozellik" Multiplicity="0..1" />
+          <End Role="t_mulkTipiOzellik" Type="Self.t_mulkTipiOzellik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_ozellik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkTipiOzellik">
+              <PropertyRef Name="ozellikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_rolTablosu_t_contact">
+          <End Role="t_contact" Type="Self.t_contact" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_rolTablosu" Type="Self.t_rolTablosu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_rolTablosu">
+              <PropertyRef Name="contactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_rolTablosu_t_roller">
+          <End Role="t_roller" Type="Self.t_roller" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="t_rolTablosu" Type="Self.t_rolTablosu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_roller">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_rolTablosu">
+              <PropertyRef Name="rollerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_satisTipiModul_t_modul">
+          <End Role="t_modul" Type="Self.t_modul" Multiplicity="1" />
+          <End Role="t_satisTipiModul" Type="Self.t_satisTipiModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_modul">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_satisTipiModul">
+              <PropertyRef Name="modulID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_satisTipiModul_t_satisTipi">
+          <End Role="t_satisTipi" Type="Self.t_satisTipi" Multiplicity="1" />
+          <End Role="t_satisTipiModul" Type="Self.t_satisTipiModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_satisTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_satisTipiModul">
+              <PropertyRef Name="satisTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PMSModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_adres" EntityType="Self.t_adres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_contact" EntityType="Self.t_contact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_contactDosyalari" EntityType="Self.t_contactDosyalari" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_iletisimIzinKayit" EntityType="Self.t_iletisimIzinKayit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_iletisimIzinleri" EntityType="Self.t_iletisimIzinleri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_iletisimStatusu" EntityType="Self.t_iletisimStatusu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_kampanyalar" EntityType="Self.t_kampanyalar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_kullanici" EntityType="Self.t_kullanici" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_lead" EntityType="Self.t_lead" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_modul" EntityType="Self.t_modul" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_mulk" EntityType="Self.t_mulk" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_mulkAdres" EntityType="Self.t_mulkAdres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_mulkIMGs" EntityType="Self.t_mulkIMGs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_mulkModul" EntityType="Self.t_mulkModul" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_mulkOzellik" EntityType="Self.t_mulkOzellik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_mulkTipi" EntityType="Self.t_mulkTipi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_mulkTipiModul" EntityType="Self.t_mulkTipiModul" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_mulkTipiOzellik" EntityType="Self.t_mulkTipiOzellik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_ozellik" EntityType="Self.t_ozellik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_roller" EntityType="Self.t_roller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_rolTablosu" EntityType="Self.t_rolTablosu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_satisTipi" EntityType="Self.t_satisTipi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_satisTipiModul" EntityType="Self.t_satisTipiModul" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_tercihEdilenIletisim" EntityType="Self.t_tercihEdilenIletisim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_uyrukUlke" EntityType="Self.t_uyrukUlke" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="t_yetkiGrubu" EntityType="Self.t_yetkiGrubu" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_t_contact_t_adres" Association="Self.FK_t_contact_t_adres">
+            <End Role="t_adres" EntitySet="t_adres" />
+            <End Role="t_contact" EntitySet="t_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_contact_t_tercihEdilenIletisim" Association="Self.FK_t_contact_t_tercihEdilenIletisim">
+            <End Role="t_tercihEdilenIletisim" EntitySet="t_tercihEdilenIletisim" />
+            <End Role="t_contact" EntitySet="t_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_contact_t_uyrukUlke" Association="Self.FK_t_contact_t_uyrukUlke">
+            <End Role="t_uyrukUlke" EntitySet="t_uyrukUlke" />
+            <End Role="t_contact" EntitySet="t_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_contact_t_yetkiGrubu" Association="Self.FK_t_contact_t_yetkiGrubu">
+            <End Role="t_yetkiGrubu" EntitySet="t_yetkiGrubu" />
+            <End Role="t_contact" EntitySet="t_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_contactDosyalari_t_contact" Association="Self.FK_t_contactDosyalari_t_contact">
+            <End Role="t_contact" EntitySet="t_contact" />
+            <End Role="t_contactDosyalari" EntitySet="t_contactDosyalari" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_iletisimIzinKayit_t_contact" Association="Self.FK_t_iletisimIzinKayit_t_contact">
+            <End Role="t_contact" EntitySet="t_contact" />
+            <End Role="t_iletisimIzinKayit" EntitySet="t_iletisimIzinKayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_iletisimIzinKayit_t_iletisimIzinleri" Association="Self.FK_t_iletisimIzinKayit_t_iletisimIzinleri">
+            <End Role="t_iletisimIzinleri" EntitySet="t_iletisimIzinleri" />
+            <End Role="t_iletisimIzinKayit" EntitySet="t_iletisimIzinKayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_kullanici_t_contact" Association="Self.FK_t_kullanici_t_contact">
+            <End Role="t_contact" EntitySet="t_contact" />
+            <End Role="t_kullanici" EntitySet="t_kullanici" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_kullanici_t_yetkiGrubu" Association="Self.FK_t_kullanici_t_yetkiGrubu">
+            <End Role="t_yetkiGrubu" EntitySet="t_yetkiGrubu" />
+            <End Role="t_kullanici" EntitySet="t_kullanici" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulk_t_mulkAdres" Association="Self.FK_t_mulk_t_mulkAdres">
+            <End Role="t_mulkAdres" EntitySet="t_mulkAdres" />
+            <End Role="t_mulk" EntitySet="t_mulk" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulk_t_mulkTipi" Association="Self.FK_t_mulk_t_mulkTipi">
+            <End Role="t_mulkTipi" EntitySet="t_mulkTipi" />
+            <End Role="t_mulk" EntitySet="t_mulk" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulk_t_satisTipi" Association="Self.FK_t_mulk_t_satisTipi">
+            <End Role="t_satisTipi" EntitySet="t_satisTipi" />
+            <End Role="t_mulk" EntitySet="t_mulk" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkIMGs_t_mulk" Association="Self.FK_t_mulkIMGs_t_mulk">
+            <End Role="t_mulk" EntitySet="t_mulk" />
+            <End Role="t_mulkIMGs" EntitySet="t_mulkIMGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkModul_t_modul" Association="Self.FK_t_mulkModul_t_modul">
+            <End Role="t_modul" EntitySet="t_modul" />
+            <End Role="t_mulkModul" EntitySet="t_mulkModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkModul_t_mulk" Association="Self.FK_t_mulkModul_t_mulk">
+            <End Role="t_mulk" EntitySet="t_mulk" />
+            <End Role="t_mulkModul" EntitySet="t_mulkModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkOzellik_t_mulk" Association="Self.FK_t_mulkOzellik_t_mulk">
+            <End Role="t_mulk" EntitySet="t_mulk" />
+            <End Role="t_mulkOzellik" EntitySet="t_mulkOzellik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkOzellik_t_ozellik" Association="Self.FK_t_mulkOzellik_t_ozellik">
+            <End Role="t_ozellik" EntitySet="t_ozellik" />
+            <End Role="t_mulkOzellik" EntitySet="t_mulkOzellik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkTipiModul_t_modul" Association="Self.FK_t_mulkTipiModul_t_modul">
+            <End Role="t_modul" EntitySet="t_modul" />
+            <End Role="t_mulkTipiModul" EntitySet="t_mulkTipiModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkTipiModul_t_mulkTipi" Association="Self.FK_t_mulkTipiModul_t_mulkTipi">
+            <End Role="t_mulkTipi" EntitySet="t_mulkTipi" />
+            <End Role="t_mulkTipiModul" EntitySet="t_mulkTipiModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkTipiOzellik_t_mulkTipi" Association="Self.FK_t_mulkTipiOzellik_t_mulkTipi">
+            <End Role="t_mulkTipi" EntitySet="t_mulkTipi" />
+            <End Role="t_mulkTipiOzellik" EntitySet="t_mulkTipiOzellik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkTipiOzellik_t_ozellik" Association="Self.FK_t_mulkTipiOzellik_t_ozellik">
+            <End Role="t_ozellik" EntitySet="t_ozellik" />
+            <End Role="t_mulkTipiOzellik" EntitySet="t_mulkTipiOzellik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_rolTablosu_t_contact" Association="Self.FK_t_rolTablosu_t_contact">
+            <End Role="t_contact" EntitySet="t_contact" />
+            <End Role="t_rolTablosu" EntitySet="t_rolTablosu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_rolTablosu_t_roller" Association="Self.FK_t_rolTablosu_t_roller">
+            <End Role="t_roller" EntitySet="t_roller" />
+            <End Role="t_rolTablosu" EntitySet="t_rolTablosu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_satisTipiModul_t_modul" Association="Self.FK_t_satisTipiModul_t_modul">
+            <End Role="t_modul" EntitySet="t_modul" />
+            <End Role="t_satisTipiModul" EntitySet="t_satisTipiModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_satisTipiModul_t_satisTipi" Association="Self.FK_t_satisTipiModul_t_satisTipi">
+            <End Role="t_satisTipi" EntitySet="t_satisTipi" />
+            <End Role="t_satisTipiModul" EntitySet="t_satisTipiModul" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityContainer Name="PMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="t_adres" EntityType="PMSModel.t_adres" />
+          <EntitySet Name="t_contact" EntityType="PMSModel.t_contact" />
+          <EntitySet Name="t_contactDosyalari" EntityType="PMSModel.t_contactDosyalari" />
+          <EntitySet Name="t_iletisimIzinKayit" EntityType="PMSModel.t_iletisimIzinKayit" />
+          <EntitySet Name="t_iletisimIzinleri" EntityType="PMSModel.t_iletisimIzinleri" />
+          <EntitySet Name="t_iletisimStatusu" EntityType="PMSModel.t_iletisimStatusu" />
+          <EntitySet Name="t_kampanyalar" EntityType="PMSModel.t_kampanyalar" />
+          <EntitySet Name="t_kullanici" EntityType="PMSModel.t_kullanici" />
+          <EntitySet Name="t_lead" EntityType="PMSModel.t_lead" />
+          <EntitySet Name="t_mulkModul" EntityType="PMSModel.t_mulkModul" />
+          <EntitySet Name="t_mulkOzellik" EntityType="PMSModel.t_mulkOzellik" />
+          <EntitySet Name="t_mulkTipi" EntityType="PMSModel.t_mulkTipi" />
+          <EntitySet Name="t_mulkTipiModul" EntityType="PMSModel.t_mulkTipiModul" />
+          <EntitySet Name="t_mulkTipiOzellik" EntityType="PMSModel.t_mulkTipiOzellik" />
+          <EntitySet Name="t_ozellik" EntityType="PMSModel.t_ozellik" />
+          <EntitySet Name="t_roller" EntityType="PMSModel.t_roller" />
+          <EntitySet Name="t_rolTablosu" EntityType="PMSModel.t_rolTablosu" />
+          <EntitySet Name="t_satisTipi" EntityType="PMSModel.t_satisTipi" />
+          <EntitySet Name="t_tercihEdilenIletisim" EntityType="PMSModel.t_tercihEdilenIletisim" />
+          <EntitySet Name="t_uyrukUlke" EntityType="PMSModel.t_uyrukUlke" />
+          <EntitySet Name="t_yetkiGrubu" EntityType="PMSModel.t_yetkiGrubu" />
+          <AssociationSet Name="FK_t_contact_t_adres" Association="PMSModel.FK_t_contact_t_adres">
+            <End Role="t_adres" EntitySet="t_adres" />
+            <End Role="t_contact" EntitySet="t_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_contact_t_tercihEdilenIletisim" Association="PMSModel.FK_t_contact_t_tercihEdilenIletisim">
+            <End Role="t_tercihEdilenIletisim" EntitySet="t_tercihEdilenIletisim" />
+            <End Role="t_contact" EntitySet="t_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_contact_t_uyrukUlke" Association="PMSModel.FK_t_contact_t_uyrukUlke">
+            <End Role="t_uyrukUlke" EntitySet="t_uyrukUlke" />
+            <End Role="t_contact" EntitySet="t_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_contact_t_yetkiGrubu" Association="PMSModel.FK_t_contact_t_yetkiGrubu">
+            <End Role="t_yetkiGrubu" EntitySet="t_yetkiGrubu" />
+            <End Role="t_contact" EntitySet="t_contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_contactDosyalari_t_contact" Association="PMSModel.FK_t_contactDosyalari_t_contact">
+            <End Role="t_contact" EntitySet="t_contact" />
+            <End Role="t_contactDosyalari" EntitySet="t_contactDosyalari" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_iletisimIzinKayit_t_contact" Association="PMSModel.FK_t_iletisimIzinKayit_t_contact">
+            <End Role="t_contact" EntitySet="t_contact" />
+            <End Role="t_iletisimIzinKayit" EntitySet="t_iletisimIzinKayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_kullanici_t_contact" Association="PMSModel.FK_t_kullanici_t_contact">
+            <End Role="t_contact" EntitySet="t_contact" />
+            <End Role="t_kullanici" EntitySet="t_kullanici" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_rolTablosu_t_contact" Association="PMSModel.FK_t_rolTablosu_t_contact">
+            <End Role="t_contact" EntitySet="t_contact" />
+            <End Role="t_rolTablosu" EntitySet="t_rolTablosu" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_iletisimIzinKayit_t_iletisimIzinleri" Association="PMSModel.FK_t_iletisimIzinKayit_t_iletisimIzinleri">
+            <End Role="t_iletisimIzinleri" EntitySet="t_iletisimIzinleri" />
+            <End Role="t_iletisimIzinKayit" EntitySet="t_iletisimIzinKayit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_kullanici_t_yetkiGrubu" Association="PMSModel.FK_t_kullanici_t_yetkiGrubu">
+            <End Role="t_yetkiGrubu" EntitySet="t_yetkiGrubu" />
+            <End Role="t_kullanici" EntitySet="t_kullanici" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkOzellik_t_ozellik" Association="PMSModel.FK_t_mulkOzellik_t_ozellik">
+            <End Role="t_ozellik" EntitySet="t_ozellik" />
+            <End Role="t_mulkOzellik" EntitySet="t_mulkOzellik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkTipiModul_t_mulkTipi" Association="PMSModel.FK_t_mulkTipiModul_t_mulkTipi">
+            <End Role="t_mulkTipi" EntitySet="t_mulkTipi" />
+            <End Role="t_mulkTipiModul" EntitySet="t_mulkTipiModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkTipiOzellik_t_mulkTipi" Association="PMSModel.FK_t_mulkTipiOzellik_t_mulkTipi">
+            <End Role="t_mulkTipi" EntitySet="t_mulkTipi" />
+            <End Role="t_mulkTipiOzellik" EntitySet="t_mulkTipiOzellik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkTipiOzellik_t_ozellik" Association="PMSModel.FK_t_mulkTipiOzellik_t_ozellik">
+            <End Role="t_ozellik" EntitySet="t_ozellik" />
+            <End Role="t_mulkTipiOzellik" EntitySet="t_mulkTipiOzellik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_rolTablosu_t_roller" Association="PMSModel.FK_t_rolTablosu_t_roller">
+            <End Role="t_roller" EntitySet="t_roller" />
+            <End Role="t_rolTablosu" EntitySet="t_rolTablosu" />
+          </AssociationSet>
+          <EntitySet Name="t_mulk" EntityType="PMSModel.t_mulk" />
+          <AssociationSet Name="FK_t_mulk_t_mulkTipi" Association="PMSModel.FK_t_mulk_t_mulkTipi">
+            <End Role="t_mulkTipi" EntitySet="t_mulkTipi" />
+            <End Role="t_mulk" EntitySet="t_mulk" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkModul_t_mulk" Association="PMSModel.FK_t_mulkModul_t_mulk">
+            <End Role="t_mulk" EntitySet="t_mulk" />
+            <End Role="t_mulkModul" EntitySet="t_mulkModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkOzellik_t_mulk" Association="PMSModel.FK_t_mulkOzellik_t_mulk">
+            <End Role="t_mulk" EntitySet="t_mulk" />
+            <End Role="t_mulkOzellik" EntitySet="t_mulkOzellik" />
+          </AssociationSet>
+          <EntitySet Name="t_modul" EntityType="PMSModel.t_modul" />
+          <AssociationSet Name="FK_t_mulkModul_t_modul" Association="PMSModel.FK_t_mulkModul_t_modul">
+            <End Role="t_modul" EntitySet="t_modul" />
+            <End Role="t_mulkModul" EntitySet="t_mulkModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulkTipiModul_t_modul" Association="PMSModel.FK_t_mulkTipiModul_t_modul">
+            <End Role="t_modul" EntitySet="t_modul" />
+            <End Role="t_mulkTipiModul" EntitySet="t_mulkTipiModul" />
+          </AssociationSet>
+          <EntitySet Name="t_mulkIMGs" EntityType="PMSModel.t_mulkIMGs" />
+          <AssociationSet Name="FK_t_mulkIMGs_t_mulk" Association="PMSModel.FK_t_mulkIMGs_t_mulk">
+            <End Role="t_mulk" EntitySet="t_mulk" />
+            <End Role="t_mulkIMGs" EntitySet="t_mulkIMGs" />
+          </AssociationSet>
+          <EntitySet Name="t_satisTipiModul" EntityType="PMSModel.t_satisTipiModul" />
+          <AssociationSet Name="FK_t_satisTipiModul_t_modul" Association="PMSModel.FK_t_satisTipiModul_t_modul">
+            <End Role="t_modul" EntitySet="t_modul" />
+            <End Role="t_satisTipiModul" EntitySet="t_satisTipiModul" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_mulk_t_satisTipi" Association="PMSModel.FK_t_mulk_t_satisTipi">
+            <End Role="t_satisTipi" EntitySet="t_satisTipi" />
+            <End Role="t_mulk" EntitySet="t_mulk" />
+          </AssociationSet>
+          <AssociationSet Name="FK_t_satisTipiModul_t_satisTipi" Association="PMSModel.FK_t_satisTipiModul_t_satisTipi">
+            <End Role="t_satisTipi" EntitySet="t_satisTipi" />
+            <End Role="t_satisTipiModul" EntitySet="t_satisTipiModul" />
+          </AssociationSet>
+          <EntitySet Name="t_mulkAdres" EntityType="PMSModel.t_mulkAdres" />
+          <AssociationSet Name="FK_t_mulk_t_mulkAdres" Association="PMSModel.FK_t_mulk_t_mulkAdres">
+            <End Role="t_mulkAdres" EntitySet="t_mulkAdres" />
+            <End Role="t_mulk" EntitySet="t_mulk" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="t_adres">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="adresAdi" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="adresAciklamasi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sehir" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ilce" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="postaKodu" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="t_contact" Relationship="PMSModel.FK_t_contact_t_adres" FromRole="t_adres" ToRole="t_contact" />
+        </EntityType>
+        <EntityType Name="t_contact">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ulke" Type="Int32" />
+          <Property Name="isim" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="soyAdi" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="organizasyonAdi" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="vergiNo" Type="Int32" />
+          <Property Name="kayitNo" Type="Int32" />
+          <Property Name="website" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="organizasyonAtama" Type="Int32" Nullable="false" />
+          <Property Name="e_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="e_mail2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isTelefonu" Type="Int32" />
+          <Property Name="isTelefonu2" Type="Int32" />
+          <Property Name="cepTelefonu" Type="Int32" />
+          <Property Name="adresID" Type="Int32" />
+          <Property Name="tercihEdilenIletisim" Type="Int32" />
+          <Property Name="yetkiGrubuID" Type="Int32" />
+          <Property Name="organizasyonMu" Type="Boolean" Nullable="false" />
+          <Property Name="Gorsel" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_adres" Relationship="PMSModel.FK_t_contact_t_adres" FromRole="t_contact" ToRole="t_adres" />
+          <NavigationProperty Name="t_tercihEdilenIletisim" Relationship="PMSModel.FK_t_contact_t_tercihEdilenIletisim" FromRole="t_contact" ToRole="t_tercihEdilenIletisim" />
+          <NavigationProperty Name="t_uyrukUlke" Relationship="PMSModel.FK_t_contact_t_uyrukUlke" FromRole="t_contact" ToRole="t_uyrukUlke" />
+          <NavigationProperty Name="t_yetkiGrubu" Relationship="PMSModel.FK_t_contact_t_yetkiGrubu" FromRole="t_contact" ToRole="t_yetkiGrubu" />
+          <NavigationProperty Name="t_contactDosyalari" Relationship="PMSModel.FK_t_contactDosyalari_t_contact" FromRole="t_contact" ToRole="t_contactDosyalari" />
+          <NavigationProperty Name="t_iletisimIzinKayit" Relationship="PMSModel.FK_t_iletisimIzinKayit_t_contact" FromRole="t_contact" ToRole="t_iletisimIzinKayit" />
+          <NavigationProperty Name="t_kullanici" Relationship="PMSModel.FK_t_kullanici_t_contact" FromRole="t_contact" ToRole="t_kullanici" />
+          <NavigationProperty Name="t_rolTablosu" Relationship="PMSModel.FK_t_rolTablosu_t_contact" FromRole="t_contact" ToRole="t_rolTablosu" />
+        </EntityType>
+        <EntityType Name="t_contactDosyalari">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="contactID" Type="Int32" Nullable="false" />
+          <Property Name="contactDosyalari" Type="Binary" Nullable="false" MaxLength="50" FixedLength="false" />
+          <NavigationProperty Name="t_contact" Relationship="PMSModel.FK_t_contactDosyalari_t_contact" FromRole="t_contactDosyalari" ToRole="t_contact" />
+        </EntityType>
+        <EntityType Name="t_iletisimIzinKayit">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="iletisimIzinleriID" Type="Int32" Nullable="false" />
+          <Property Name="contactID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="t_contact" Relationship="PMSModel.FK_t_iletisimIzinKayit_t_contact" FromRole="t_iletisimIzinKayit" ToRole="t_contact" />
+          <NavigationProperty Name="t_iletisimIzinleri" Relationship="PMSModel.FK_t_iletisimIzinKayit_t_iletisimIzinleri" FromRole="t_iletisimIzinKayit" ToRole="t_iletisimIzinleri" />
+        </EntityType>
+        <EntityType Name="t_iletisimIzinleri">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="izinAdi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_iletisimIzinKayit" Relationship="PMSModel.FK_t_iletisimIzinKayit_t_iletisimIzinleri" FromRole="t_iletisimIzinleri" ToRole="t_iletisimIzinKayit" />
+        </EntityType>
+        <EntityType Name="t_iletisimStatusu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="iletisimAdi" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="t_kampanyalar">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kampanyaAdi" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="t_kullanici">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="kullaniciAdi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sifre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="yetkiGrubu" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="t_contact" Relationship="PMSModel.FK_t_kullanici_t_contact" FromRole="t_kullanici" ToRole="t_contact" />
+          <NavigationProperty Name="t_yetkiGrubu" Relationship="PMSModel.FK_t_kullanici_t_yetkiGrubu" FromRole="t_kullanici" ToRole="t_yetkiGrubu" />
+        </EntityType>
+        <EntityType Name="t_lead">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="contactID" Type="Int32" Nullable="false" />
+          <Property Name="iletisimStatusuID" Type="Int32" Nullable="false" />
+          <Property Name="mulkSahibi" Type="Int32" Nullable="false" />
+          <Property Name="sorguTarihi" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="gelecekRandevu" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="sourceDetayID" Type="Int32" Nullable="false" />
+          <Property Name="mulkTipiID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_mulkModul">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mulkID" Type="Int32" Nullable="false" />
+          <Property Name="modulID" Type="Int32" />
+          <Property Name="deger" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_mulk" Relationship="PMSModel.FK_t_mulkModul_t_mulk" FromRole="t_mulkModul" ToRole="t_mulk" />
+          <NavigationProperty Name="t_modul" Relationship="PMSModel.FK_t_mulkModul_t_modul" FromRole="t_mulkModul" ToRole="t_modul" />
+        </EntityType>
+        <EntityType Name="t_mulkOzellik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mulkID" Type="Int32" />
+          <Property Name="ozellikID" Type="Int32" />
+          <NavigationProperty Name="t_ozellik" Relationship="PMSModel.FK_t_mulkOzellik_t_ozellik" FromRole="t_mulkOzellik" ToRole="t_ozellik" />
+          <NavigationProperty Name="t_mulk" Relationship="PMSModel.FK_t_mulkOzellik_t_mulk" FromRole="t_mulkOzellik" ToRole="t_mulk" />
+        </EntityType>
+        <EntityType Name="t_mulkTipi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipAdi" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_mulkTipiModul" Relationship="PMSModel.FK_t_mulkTipiModul_t_mulkTipi" FromRole="t_mulkTipi" ToRole="t_mulkTipiModul" />
+          <NavigationProperty Name="t_mulkTipiOzellik" Relationship="PMSModel.FK_t_mulkTipiOzellik_t_mulkTipi" FromRole="t_mulkTipi" ToRole="t_mulkTipiOzellik" />
+          <NavigationProperty Name="t_mulk" Relationship="PMSModel.FK_t_mulk_t_mulkTipi" FromRole="t_mulkTipi" ToRole="t_mulk" />
+        </EntityType>
+        <EntityType Name="t_mulkTipiModul">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mulkTipiID" Type="Int32" />
+          <Property Name="modulID" Type="Int32" />
+          <NavigationProperty Name="t_mulkTipi" Relationship="PMSModel.FK_t_mulkTipiModul_t_mulkTipi" FromRole="t_mulkTipiModul" ToRole="t_mulkTipi" />
+          <NavigationProperty Name="t_modul" Relationship="PMSModel.FK_t_mulkTipiModul_t_modul" FromRole="t_mulkTipiModul" ToRole="t_modul" />
+        </EntityType>
+        <EntityType Name="t_mulkTipiOzellik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mulkTipiID" Type="Int32" />
+          <Property Name="ozellikID" Type="Int32" />
+          <NavigationProperty Name="t_mulkTipi" Relationship="PMSModel.FK_t_mulkTipiOzellik_t_mulkTipi" FromRole="t_mulkTipiOzellik" ToRole="t_mulkTipi" />
+          <NavigationProperty Name="t_ozellik" Relationship="PMSModel.FK_t_mulkTipiOzellik_t_ozellik" FromRole="t_mulkTipiOzellik" ToRole="t_ozellik" />
+        </EntityType>
+        <EntityType Name="t_ozellik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ozellikAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ozellikAtama" Type="Int32" />
+          <NavigationProperty Name="t_mulkOzellik" Relationship="PMSModel.FK_t_mulkOzellik_t_ozellik" FromRole="t_ozellik" ToRole="t_mulkOzellik" />
+          <NavigationProperty Name="t_mulkTipiOzellik" Relationship="PMSModel.FK_t_mulkTipiOzellik_t_ozellik" FromRole="t_ozellik" ToRole="t_mulkTipiOzellik" />
+        </EntityType>
+        <EntityType Name="t_roller">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rolAdi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_rolTablosu" Relationship="PMSModel.FK_t_rolTablosu_t_roller" FromRole="t_roller" ToRole="t_rolTablosu" />
+        </EntityType>
+        <EntityType Name="t_rolTablosu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="contactID" Type="Int32" Nullable="false" />
+          <Property Name="rollerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="t_contact" Relationship="PMSModel.FK_t_rolTablosu_t_contact" FromRole="t_rolTablosu" ToRole="t_contact" />
+          <NavigationProperty Name="t_roller" Relationship="PMSModel.FK_t_rolTablosu_t_roller" FromRole="t_rolTablosu" ToRole="t_roller" />
+        </EntityType>
+        <EntityType Name="t_satisTipi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="satisTipiAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_mulk" Relationship="PMSModel.FK_t_mulk_t_satisTipi" FromRole="t_satisTipi" ToRole="t_mulk" />
+          <NavigationProperty Name="t_satisTipiModul" Relationship="PMSModel.FK_t_satisTipiModul_t_satisTipi" FromRole="t_satisTipi" ToRole="t_satisTipiModul" />
+        </EntityType>
+        <EntityType Name="t_tercihEdilenIletisim">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tercihEdilenIletisimAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_contact" Relationship="PMSModel.FK_t_contact_t_tercihEdilenIletisim" FromRole="t_tercihEdilenIletisim" ToRole="t_contact" />
+        </EntityType>
+        <EntityType Name="t_uyrukUlke">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="uyrukAdi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_contact" Relationship="PMSModel.FK_t_contact_t_uyrukUlke" FromRole="t_uyrukUlke" ToRole="t_contact" />
+        </EntityType>
+        <EntityType Name="t_yetkiGrubu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yetkiGrubu" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_contact" Relationship="PMSModel.FK_t_contact_t_yetkiGrubu" FromRole="t_yetkiGrubu" ToRole="t_contact" />
+          <NavigationProperty Name="t_kullanici" Relationship="PMSModel.FK_t_kullanici_t_yetkiGrubu" FromRole="t_yetkiGrubu" ToRole="t_kullanici" />
+        </EntityType>
+        <Association Name="FK_t_contact_t_adres">
+          <End Type="PMSModel.t_adres" Role="t_adres" Multiplicity="0..1" />
+          <End Type="PMSModel.t_contact" Role="t_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_adres">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contact">
+              <PropertyRef Name="adresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_contact_t_tercihEdilenIletisim">
+          <End Type="PMSModel.t_tercihEdilenIletisim" Role="t_tercihEdilenIletisim" Multiplicity="0..1" />
+          <End Type="PMSModel.t_contact" Role="t_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_tercihEdilenIletisim">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contact">
+              <PropertyRef Name="tercihEdilenIletisim" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_contact_t_uyrukUlke">
+          <End Type="PMSModel.t_uyrukUlke" Role="t_uyrukUlke" Multiplicity="0..1" />
+          <End Type="PMSModel.t_contact" Role="t_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_uyrukUlke">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contact">
+              <PropertyRef Name="Ulke" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_contact_t_yetkiGrubu">
+          <End Type="PMSModel.t_yetkiGrubu" Role="t_yetkiGrubu" Multiplicity="0..1" />
+          <End Type="PMSModel.t_contact" Role="t_contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_yetkiGrubu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contact">
+              <PropertyRef Name="yetkiGrubuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_contactDosyalari_t_contact">
+          <End Type="PMSModel.t_contact" Role="t_contact" Multiplicity="1" />
+          <End Type="PMSModel.t_contactDosyalari" Role="t_contactDosyalari" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_contactDosyalari">
+              <PropertyRef Name="contactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_iletisimIzinKayit_t_contact">
+          <End Type="PMSModel.t_contact" Role="t_contact" Multiplicity="1" />
+          <End Type="PMSModel.t_iletisimIzinKayit" Role="t_iletisimIzinKayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_iletisimIzinKayit">
+              <PropertyRef Name="contactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_kullanici_t_contact">
+          <End Type="PMSModel.t_contact" Role="t_contact" Multiplicity="1" />
+          <End Type="PMSModel.t_kullanici" Role="t_kullanici" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="t_contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_kullanici">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_rolTablosu_t_contact">
+          <End Type="PMSModel.t_contact" Role="t_contact" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PMSModel.t_rolTablosu" Role="t_rolTablosu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_contact">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_rolTablosu">
+              <PropertyRef Name="contactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_iletisimIzinKayit_t_iletisimIzinleri">
+          <End Type="PMSModel.t_iletisimIzinleri" Role="t_iletisimIzinleri" Multiplicity="1" />
+          <End Type="PMSModel.t_iletisimIzinKayit" Role="t_iletisimIzinKayit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_iletisimIzinleri">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_iletisimIzinKayit">
+              <PropertyRef Name="iletisimIzinleriID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_kullanici_t_yetkiGrubu">
+          <End Type="PMSModel.t_yetkiGrubu" Role="t_yetkiGrubu" Multiplicity="1" />
+          <End Type="PMSModel.t_kullanici" Role="t_kullanici" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_yetkiGrubu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_kullanici">
+              <PropertyRef Name="yetkiGrubu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkOzellik_t_ozellik">
+          <End Type="PMSModel.t_ozellik" Role="t_ozellik" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulkOzellik" Role="t_mulkOzellik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_ozellik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkOzellik">
+              <PropertyRef Name="ozellikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkTipiModul_t_mulkTipi">
+          <End Type="PMSModel.t_mulkTipi" Role="t_mulkTipi" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulkTipiModul" Role="t_mulkTipiModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulkTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkTipiModul">
+              <PropertyRef Name="mulkTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkTipiOzellik_t_mulkTipi">
+          <End Type="PMSModel.t_mulkTipi" Role="t_mulkTipi" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulkTipiOzellik" Role="t_mulkTipiOzellik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulkTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkTipiOzellik">
+              <PropertyRef Name="mulkTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkTipiOzellik_t_ozellik">
+          <End Type="PMSModel.t_ozellik" Role="t_ozellik" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulkTipiOzellik" Role="t_mulkTipiOzellik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_ozellik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkTipiOzellik">
+              <PropertyRef Name="ozellikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_rolTablosu_t_roller">
+          <End Type="PMSModel.t_roller" Role="t_roller" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PMSModel.t_rolTablosu" Role="t_rolTablosu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_roller">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_rolTablosu">
+              <PropertyRef Name="rollerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="t_mulk">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mulkBaslik" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="aciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mulkTipiID" Type="Int32" />
+          <Property Name="satisTipiID" Type="Int32" />
+          <NavigationProperty Name="t_mulkTipi" Relationship="PMSModel.FK_t_mulk_t_mulkTipi" FromRole="t_mulk" ToRole="t_mulkTipi" />
+          <NavigationProperty Name="t_mulkModul" Relationship="PMSModel.FK_t_mulkModul_t_mulk" FromRole="t_mulk" ToRole="t_mulkModul" />
+          <NavigationProperty Name="t_mulkOzellik" Relationship="PMSModel.FK_t_mulkOzellik_t_mulk" FromRole="t_mulk" ToRole="t_mulkOzellik" />
+          <NavigationProperty Name="t_mulkIMGs" Relationship="PMSModel.FK_t_mulkIMGs_t_mulk" FromRole="t_mulk" ToRole="t_mulkIMGs" />
+          <NavigationProperty Name="t_satisTipi" Relationship="PMSModel.FK_t_mulk_t_satisTipi" FromRole="t_mulk" ToRole="t_satisTipi" />
+          <Property Name="fiyat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="adresID" Type="Int32" />
+          <NavigationProperty Name="t_mulkAdres" Relationship="PMSModel.FK_t_mulk_t_mulkAdres" FromRole="t_mulk" ToRole="t_mulkAdres" />
+        </EntityType>
+        <Association Name="FK_t_mulk_t_mulkTipi">
+          <End Type="PMSModel.t_mulkTipi" Role="t_mulkTipi" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulk" Role="t_mulk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulkTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulk">
+              <PropertyRef Name="mulkTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkModul_t_mulk">
+          <End Type="PMSModel.t_mulk" Role="t_mulk" Multiplicity="1" />
+          <End Type="PMSModel.t_mulkModul" Role="t_mulkModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulk">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkModul">
+              <PropertyRef Name="mulkID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkOzellik_t_mulk">
+          <End Type="PMSModel.t_mulk" Role="t_mulk" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulkOzellik" Role="t_mulkOzellik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulk">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkOzellik">
+              <PropertyRef Name="mulkID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="t_modul">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="modulAdi" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="degerler" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tur" Type="Int32" />
+          <NavigationProperty Name="t_mulkModul" Relationship="PMSModel.FK_t_mulkModul_t_modul" FromRole="t_modul" ToRole="t_mulkModul" />
+          <NavigationProperty Name="t_mulkTipiModul" Relationship="PMSModel.FK_t_mulkTipiModul_t_modul" FromRole="t_modul" ToRole="t_mulkTipiModul" />
+          <NavigationProperty Name="t_satisTipiModul" Relationship="PMSModel.FK_t_satisTipiModul_t_modul" FromRole="t_modul" ToRole="t_satisTipiModul" />
+        </EntityType>
+        <Association Name="FK_t_mulkModul_t_modul">
+          <End Type="PMSModel.t_modul" Role="t_modul" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulkModul" Role="t_mulkModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_modul">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkModul">
+              <PropertyRef Name="modulID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulkTipiModul_t_modul">
+          <End Type="PMSModel.t_modul" Role="t_modul" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulkTipiModul" Role="t_mulkTipiModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_modul">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkTipiModul">
+              <PropertyRef Name="modulID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="t_mulkIMGs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mulkID" Type="Int32" />
+          <Property Name="imagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_mulk" Relationship="PMSModel.FK_t_mulkIMGs_t_mulk" FromRole="t_mulkIMGs" ToRole="t_mulk" />
+        </EntityType>
+        <Association Name="FK_t_mulkIMGs_t_mulk">
+          <End Type="PMSModel.t_mulk" Role="t_mulk" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulkIMGs" Role="t_mulkIMGs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulk">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulkIMGs">
+              <PropertyRef Name="mulkID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="t_satisTipiModul">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="satisTipiID" Type="Int32" Nullable="false" />
+          <Property Name="modulID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="t_modul" Relationship="PMSModel.FK_t_satisTipiModul_t_modul" FromRole="t_satisTipiModul" ToRole="t_modul" />
+          <NavigationProperty Name="t_satisTipi" Relationship="PMSModel.FK_t_satisTipiModul_t_satisTipi" FromRole="t_satisTipiModul" ToRole="t_satisTipi" />
+        </EntityType>
+        <Association Name="FK_t_satisTipiModul_t_modul">
+          <End Type="PMSModel.t_modul" Role="t_modul" Multiplicity="1" />
+          <End Type="PMSModel.t_satisTipiModul" Role="t_satisTipiModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_modul">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_satisTipiModul">
+              <PropertyRef Name="modulID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_mulk_t_satisTipi">
+          <End Type="PMSModel.t_satisTipi" Role="t_satisTipi" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulk" Role="t_mulk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_satisTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulk">
+              <PropertyRef Name="satisTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_t_satisTipiModul_t_satisTipi">
+          <End Type="PMSModel.t_satisTipi" Role="t_satisTipi" Multiplicity="1" />
+          <End Type="PMSModel.t_satisTipiModul" Role="t_satisTipiModul" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_satisTipi">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_satisTipiModul">
+              <PropertyRef Name="satisTipiID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="t_mulkAdres">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sokak" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="cadde" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="apartmanNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="il" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ilce" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ulke" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="t_mulk" Relationship="PMSModel.FK_t_mulk_t_mulkAdres" FromRole="t_mulkAdres" ToRole="t_mulk" />
+        </EntityType>
+        <Association Name="FK_t_mulk_t_mulkAdres">
+          <End Type="PMSModel.t_mulkAdres" Role="t_mulkAdres" Multiplicity="0..1" />
+          <End Type="PMSModel.t_mulk" Role="t_mulk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="t_mulkAdres">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="t_mulk">
+              <PropertyRef Name="adresID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PMSModelStoreContainer" CdmEntityContainer="PMSEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PMSModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_adres">
+            <EntityTypeMapping TypeName="PMSModel.t_adres">
+              <MappingFragment StoreEntitySet="t_adres">
+                <ScalarProperty Name="postaKodu" ColumnName="postaKodu" />
+                <ScalarProperty Name="ilce" ColumnName="ilce" />
+                <ScalarProperty Name="sehir" ColumnName="sehir" />
+                <ScalarProperty Name="adresAciklamasi" ColumnName="adresAciklamasi" />
+                <ScalarProperty Name="adresAdi" ColumnName="adresAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_contact">
+            <EntityTypeMapping TypeName="PMSModel.t_contact">
+              <MappingFragment StoreEntitySet="t_contact">
+                <ScalarProperty Name="Gorsel" ColumnName="Gorsel" />
+                <ScalarProperty Name="organizasyonMu" ColumnName="organizasyonMu" />
+                <ScalarProperty Name="yetkiGrubuID" ColumnName="yetkiGrubuID" />
+                <ScalarProperty Name="tercihEdilenIletisim" ColumnName="tercihEdilenIletisim" />
+                <ScalarProperty Name="adresID" ColumnName="adresID" />
+                <ScalarProperty Name="cepTelefonu" ColumnName="cepTelefonu" />
+                <ScalarProperty Name="isTelefonu2" ColumnName="isTelefonu2" />
+                <ScalarProperty Name="isTelefonu" ColumnName="isTelefonu" />
+                <ScalarProperty Name="e_mail2" ColumnName="e-mail2" />
+                <ScalarProperty Name="e_mail" ColumnName="e-mail" />
+                <ScalarProperty Name="organizasyonAtama" ColumnName="organizasyonAtama" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="website" ColumnName="website" />
+                <ScalarProperty Name="kayitNo" ColumnName="kayitNo" />
+                <ScalarProperty Name="vergiNo" ColumnName="vergiNo" />
+                <ScalarProperty Name="organizasyonAdi" ColumnName="organizasyonAdi" />
+                <ScalarProperty Name="soyAdi" ColumnName="soyAdi" />
+                <ScalarProperty Name="isim" ColumnName="isim" />
+                <ScalarProperty Name="Ulke" ColumnName="Ulke" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_contactDosyalari">
+            <EntityTypeMapping TypeName="PMSModel.t_contactDosyalari">
+              <MappingFragment StoreEntitySet="t_contactDosyalari">
+                <ScalarProperty Name="contactDosyalari" ColumnName="contactDosyalari" />
+                <ScalarProperty Name="contactID" ColumnName="contactID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_iletisimIzinKayit">
+            <EntityTypeMapping TypeName="PMSModel.t_iletisimIzinKayit">
+              <MappingFragment StoreEntitySet="t_iletisimIzinKayit">
+                <ScalarProperty Name="contactID" ColumnName="contactID" />
+                <ScalarProperty Name="iletisimIzinleriID" ColumnName="iletisimIzinleriID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_iletisimIzinleri">
+            <EntityTypeMapping TypeName="PMSModel.t_iletisimIzinleri">
+              <MappingFragment StoreEntitySet="t_iletisimIzinleri">
+                <ScalarProperty Name="izinAdi" ColumnName="izinAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_iletisimStatusu">
+            <EntityTypeMapping TypeName="PMSModel.t_iletisimStatusu">
+              <MappingFragment StoreEntitySet="t_iletisimStatusu">
+                <ScalarProperty Name="iletisimAdi" ColumnName="iletisimAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_kampanyalar">
+            <EntityTypeMapping TypeName="PMSModel.t_kampanyalar">
+              <MappingFragment StoreEntitySet="t_kampanyalar">
+                <ScalarProperty Name="kampanyaAdi" ColumnName="kampanyaAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_kullanici">
+            <EntityTypeMapping TypeName="PMSModel.t_kullanici">
+              <MappingFragment StoreEntitySet="t_kullanici">
+                <ScalarProperty Name="yetkiGrubu" ColumnName="yetkiGrubu" />
+                <ScalarProperty Name="sifre" ColumnName="sifre" />
+                <ScalarProperty Name="kullaniciAdi" ColumnName="kullaniciAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_lead">
+            <EntityTypeMapping TypeName="PMSModel.t_lead">
+              <MappingFragment StoreEntitySet="t_lead">
+                <ScalarProperty Name="mulkTipiID" ColumnName="mulkTipiID" />
+                <ScalarProperty Name="sourceDetayID" ColumnName="sourceDetayID" />
+                <ScalarProperty Name="gelecekRandevu" ColumnName="gelecekRandevu" />
+                <ScalarProperty Name="sorguTarihi" ColumnName="sorguTarihi" />
+                <ScalarProperty Name="mulkSahibi" ColumnName="mulkSahibi" />
+                <ScalarProperty Name="iletisimStatusuID" ColumnName="iletisimStatusuID" />
+                <ScalarProperty Name="contactID" ColumnName="contactID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_mulkModul">
+            <EntityTypeMapping TypeName="PMSModel.t_mulkModul">
+              <MappingFragment StoreEntitySet="t_mulkModul">
+                <ScalarProperty Name="deger" ColumnName="deger" />
+                <ScalarProperty Name="modulID" ColumnName="modulID" />
+                <ScalarProperty Name="mulkID" ColumnName="mulkID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_mulkOzellik">
+            <EntityTypeMapping TypeName="PMSModel.t_mulkOzellik">
+              <MappingFragment StoreEntitySet="t_mulkOzellik">
+                <ScalarProperty Name="ozellikID" ColumnName="ozellikID" />
+                <ScalarProperty Name="mulkID" ColumnName="mulkID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_mulkTipi">
+            <EntityTypeMapping TypeName="PMSModel.t_mulkTipi">
+              <MappingFragment StoreEntitySet="t_mulkTipi">
+                <ScalarProperty Name="tipAdi" ColumnName="tipAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_mulkTipiModul">
+            <EntityTypeMapping TypeName="PMSModel.t_mulkTipiModul">
+              <MappingFragment StoreEntitySet="t_mulkTipiModul">
+                <ScalarProperty Name="modulID" ColumnName="modulID" />
+                <ScalarProperty Name="mulkTipiID" ColumnName="mulktipiID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_mulkTipiOzellik">
+            <EntityTypeMapping TypeName="PMSModel.t_mulkTipiOzellik">
+              <MappingFragment StoreEntitySet="t_mulkTipiOzellik">
+                <ScalarProperty Name="ozellikID" ColumnName="ozellikID" />
+                <ScalarProperty Name="mulkTipiID" ColumnName="mulkTipiID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_ozellik">
+            <EntityTypeMapping TypeName="PMSModel.t_ozellik">
+              <MappingFragment StoreEntitySet="t_ozellik">
+                <ScalarProperty Name="ozellikAtama" ColumnName="ozellikAtama" />
+                <ScalarProperty Name="ozellikAdi" ColumnName="ozellikAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_roller">
+            <EntityTypeMapping TypeName="PMSModel.t_roller">
+              <MappingFragment StoreEntitySet="t_roller">
+                <ScalarProperty Name="rolAdi" ColumnName="rolAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_rolTablosu">
+            <EntityTypeMapping TypeName="PMSModel.t_rolTablosu">
+              <MappingFragment StoreEntitySet="t_rolTablosu">
+                <ScalarProperty Name="rollerID" ColumnName="rollerID" />
+                <ScalarProperty Name="contactID" ColumnName="contactID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_satisTipi">
+            <EntityTypeMapping TypeName="PMSModel.t_satisTipi">
+              <MappingFragment StoreEntitySet="t_satisTipi">
+                <ScalarProperty Name="satisTipiAdi" ColumnName="satisTipiAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_tercihEdilenIletisim">
+            <EntityTypeMapping TypeName="PMSModel.t_tercihEdilenIletisim">
+              <MappingFragment StoreEntitySet="t_tercihEdilenIletisim">
+                <ScalarProperty Name="tercihEdilenIletisimAdi" ColumnName="tercihEdilenIletisimAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_uyrukUlke">
+            <EntityTypeMapping TypeName="PMSModel.t_uyrukUlke">
+              <MappingFragment StoreEntitySet="t_uyrukUlke">
+                <ScalarProperty Name="uyrukAdi" ColumnName="uyrukAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_yetkiGrubu">
+            <EntityTypeMapping TypeName="PMSModel.t_yetkiGrubu">
+              <MappingFragment StoreEntitySet="t_yetkiGrubu">
+                <ScalarProperty Name="yetkiGrubu" ColumnName="yetkiGrubu" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_mulk">
+            <EntityTypeMapping TypeName="PMSModel.t_mulk">
+              <MappingFragment StoreEntitySet="t_mulk">
+                <ScalarProperty Name="adresID" ColumnName="adresID" />
+                <ScalarProperty Name="fiyat" ColumnName="fiyat" />
+                <ScalarProperty Name="satisTipiID" ColumnName="satisTipiID" />
+                <ScalarProperty Name="mulkTipiID" ColumnName="mulkTipiID" />
+                <ScalarProperty Name="aciklama" ColumnName="aciklama" />
+                <ScalarProperty Name="mulkBaslik" ColumnName="mulkBaslik" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_modul">
+            <EntityTypeMapping TypeName="PMSModel.t_modul">
+              <MappingFragment StoreEntitySet="t_modul">
+                <ScalarProperty Name="tur" ColumnName="tur" />
+                <ScalarProperty Name="degerler" ColumnName="degerler" />
+                <ScalarProperty Name="modulAdi" ColumnName="modulAdi" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_mulkIMGs">
+            <EntityTypeMapping TypeName="PMSModel.t_mulkIMGs">
+              <MappingFragment StoreEntitySet="t_mulkIMGs">
+                <ScalarProperty Name="imagePath" ColumnName="imagePath" />
+                <ScalarProperty Name="mulkID" ColumnName="mulkID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_satisTipiModul">
+            <EntityTypeMapping TypeName="PMSModel.t_satisTipiModul">
+              <MappingFragment StoreEntitySet="t_satisTipiModul">
+                <ScalarProperty Name="modulID" ColumnName="modulID" />
+                <ScalarProperty Name="satisTipiID" ColumnName="satisTipiID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_mulkAdres">
+            <EntityTypeMapping TypeName="PMSModel.t_mulkAdres">
+              <MappingFragment StoreEntitySet="t_mulkAdres">
+                <ScalarProperty Name="ulke" ColumnName="ulke" />
+                <ScalarProperty Name="ilce" ColumnName="ilce" />
+                <ScalarProperty Name="il" ColumnName="il" />
+                <ScalarProperty Name="apartmanNo" ColumnName="apartmanNo" />
+                <ScalarProperty Name="cadde" ColumnName="cadde" />
+                <ScalarProperty Name="sokak" ColumnName="sokak" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

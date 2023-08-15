@@ -1,0 +1,229 @@
+﻿@model EmlakYonetim.Models.ViewModels.MulkViewModel
+<head>
+    <link href="~/Content/Proje/Secim.css" rel="stylesheet" />
+<link href="~/Content/Proje/map.css" rel="stylesheet" />
+</head>
+<div>
+    <div class="form-container" style="text-align:center; margin-top:25px; margin-bottom:25px;">
+        <form method="post" action="@Url.Action("MulkEkle", "Mulk")" enctype="multipart/form-data">
+            <h1>Mülk tipiniz: <strong>@ViewBag.MulkTipiAdi</strong>, Satış tipiniz: <strong>@ViewBag.SatisTipiAdi</strong></h1>
+            <hr />
+            <div>
+                <label style="display:block; text-align:center;"><strong>Mülk Başlığı</strong></label>
+                <input type="text" name="MulkBaslik" class="form-control" style="width: 350px; margin: 0 auto;" />
+                @if (ViewBag.SatisTipiAdi == "Kiralık")
+                {
+                    <label style="display:block; text-align:center;"><strong>Kira Fiyatı</strong></label>
+                    <input type="text" name="MulkFiyat" class="form-control" style="width: 350px; margin: 0 auto;" />
+                }
+                else
+                {
+                    <label style="display:block; text-align:center;"><strong>Mülk Fiyatı</strong></label>
+                    <input type="text" name="MulkFiyat" class="form-control" style="width: 350px; margin: 0 auto;" />
+                }
+
+                <hr />
+            </div>
+            <br />
+            <div>
+                <h2><strong>Modüller</strong> </h2>
+                <ul>
+                    @foreach (var modul in Model.Moduller)
+                    {
+                        if (modul.degerler != null)
+                        {
+                            string[] degerler = modul.degerler.Split(',');
+                            <label>@modul.modulAdi:</label>
+                            <select name="SecilenModuller">
+                                <option value="">Seçiniz</option>
+                                @foreach (var deger in degerler)
+                                {
+                                    <option value="@deger">@deger</option>
+                                }
+                            </select>
+                            <input type="hidden" value="@modul.id" name="DropDownModulID" />
+                            <br />
+                        }
+                        else
+                        {
+                            <label>@modul.modulAdi:</label>
+                            <input type="text" class="form-control" name="GirilenModuller" style="width: 150px;" />
+                            <input type="hidden" value="@modul.id" name="InputModulID" />
+                            <br />
+                        }
+                    }
+                </ul>
+            </div>
+
+            <div>
+                <h2><strong>Özellikler</strong></h2>
+                @foreach (var ozellik in Model.BaslikOzellikler)
+                {
+                    if (ozellik.ozellikAtama == 0)
+                    {
+                        <hr />
+                        <h3>@ozellik.ozellikAdi</h3>
+                        <div class="ozellikler-container">
+                            @foreach (var altozelik in Model.Ozellikler)
+                            {
+
+                                if (altozelik.ozellikAtama != null && altozelik.ozellikAtama == ozellik.id)
+                                {
+                                    <label class="ozellik-label">
+                                        <input type="checkbox" name="SecilenOzellikler" value="@altozelik.id" />
+                                        @altozelik.ozellikAdi
+                                    </label>
+                                }
+
+                            }
+                        </div>
+                    }
+                }
+            </div>
+            <input type="hidden" name="MulkTipiID" value="@TempData["MulkTipiID"]" />
+            <input type="hidden" name="SatisTipiID" value="@TempData["SatisTipiID"]" />
+            <br />
+
+            <div>
+                <label style="text-align:center"><strong>Mülk Açıklama</strong></label>
+                <textarea name="MulkAciklama" class="form-control" rows="4" cols="50"></textarea>
+
+            </div>
+            <br />
+            <h3>Adres Seçimi</h3>
+            <div class="card-container" style="position:relative">
+                <div class="panel">
+                    <div>
+                        <img class="sb-title-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
+                        <span class="sb-title">Adres Seçiniz</span>
+                    </div>
+
+                    <input type="text"  placeholder="Sokak görünümü için tam adresi giriniz" value="" id="location-input" />
+                    <input type="text" placeholder="ApartmanNO(Opsiyonel)" name="ApartmanNo" />
+                    <input type="text" placeholder="Sokak/Cadde" name="SokakCadde"/>
+                    <input type="text" placeholder="İlçe" id="locality-input" name="Ilce" />
+                    <div class="half-input-container">
+                        <input type="text" class="half-input" name="Il" placeholder="Şehir" value="" id="administrative_area_level_1-input" />
+                        <input type="text" class="half-input" name="PostaKodu" value="" placeholder="Zip/Post kodu" id="postal_code-input" />
+                    </div>
+                    <input type="text" placeholder="Country" name="Ulke" value="" id="country-input" />
+                    <input type="hidden" name="Latitude" id="latitude-input" value="">
+                    <input type="hidden" name="Longitude" id="longitude-input" value="">
+                </div>
+                <div class="map" id="gmp-map"></div>
+            </div>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZGMIJ_T7t1koK_uUE23_MeUziWworYvI&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>
+            <br />
+            <label style="text-align:center;"><strong>Fotoğrafları yükleyiniz, ilk fotoğraf VİTRİN görseli olacaktır.</strong> </label>
+            <input type="file" name="Gorseller" multiple />
+            <br />
+            <input type="submit" style="padding:5px;" value="Mülkü Kaydet" />
+
+        </form>
+    
+    </div>
+    
+</div>
+
+    <style>
+        
+    </style>
+
+
+
+<script>
+    let selectedCoordinates = {
+        lat: 0,
+        lng: 0
+    };
+
+    "use strict";
+
+    function initMap() {
+        const CONFIGURATION = {
+            "ctaTitle": "Checkout",
+            "mapOptions": { "center": { "lat": 39.9334, "lng": 32.8597 }, "fullscreenControl": true, "mapTypeControl": false, "streetViewControl": true, "zoom": 5, "zoomControl": true, "maxZoom": 35, "mapId": "" },
+            "mapsApiKey": "AIzaSyDZGMIJ_T7t1koK_uUE23_MeUziWworYvI",
+            "capabilities": { "addressAutocompleteControl": true, "mapDisplayControl": true, "ctaControl": true }
+        };
+        const componentForm = [
+            'location',
+            'locality',
+            'administrative_area_level_1',
+            'country',
+            'postal_code',
+        ];
+
+        const getFormInputElement = (component) => document.getElementById(component + '-input');
+        const map = new google.maps.Map(document.getElementById("gmp-map"), {
+            zoom: CONFIGURATION.mapOptions.zoom,
+            center: { lat: 39.9334, lng: 32.8597 },
+            mapTypeControl: false,
+            fullscreenControl: CONFIGURATION.mapOptions.fullscreenControl,
+            zoomControl: CONFIGURATION.mapOptions.zoomControl,
+            streetViewControl: CONFIGURATION.mapOptions.streetViewControl
+        });
+        const marker = new google.maps.Marker({ map: map, draggable: true }); //
+        const autocompleteInput = getFormInputElement('location');
+        const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
+            fields: ["address_components", "geometry", "name"],
+            types: ["address"],
+        });
+        autocomplete.addListener('place_changed', function () {
+            marker.setVisible(false);
+            const place = autocomplete.getPlace();
+            if (!place.geometry) {
+                window.alert('No details available for input: \'' + place.name + '\'');
+                return;
+            }
+            renderAddress(place);
+            fillInAddress(place);
+
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            console.log('Selected Coordinates:', latitude, longitude);
+        });
+
+        function fillInAddress(place) {  // optional parameter
+            const addressNameFormat = {
+                'street_number': 'short_name',
+                'route': 'long_name',
+                'locality': 'long_name',
+                'administrative_area_level_1': 'short_name',
+                'country': 'long_name',
+                'postal_code': 'short_name',
+            };
+            const getAddressComp = function (type) {
+                for (const component of place.address_components) {
+                    if (component.types[0] === type) {
+                        return component[addressNameFormat[type]];
+                    }
+                }
+                return '';
+            };
+            getFormInputElement('location').value = getAddressComp('street_number') + ' '
+                + getAddressComp('route');
+            for (const component of componentForm) {
+                // Location field is handled separately above as it has different logic.
+                if (component !== 'location') {
+                    getFormInputElement(component).value = getAddressComp(component);
+                }
+            }
+        }
+
+        function renderAddress(place) {
+            map.setCenter(place.geometry.location);
+            map.setZoom(19);
+            marker.setPosition(place.geometry.location);
+            marker.setVisible(true);
+            selectedCoordinates.lat = place.geometry.location.lat();
+            selectedCoordinates.lng = place.geometry.location.lng();
+
+            // Gizli form alanlarını güncelle
+            document.getElementById("latitude-input").value = selectedCoordinates.lat;
+            document.getElementById("longitude-input").value = selectedCoordinates.lng;
+        }
+
+
+    }
+</script>

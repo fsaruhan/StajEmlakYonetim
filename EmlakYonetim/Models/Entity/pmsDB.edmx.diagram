@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="958ec733ad874f4396245921137f602f" Name="Diagram1" ZoomLevel="112">
+        <EntityTypeShape EntityType="PMSModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PMSModel.t_adres" Width="1.5" PointX="3.75" PointY="8.375" />
+        <EntityTypeShape EntityType="PMSModel.t_contact" Width="1.5" PointX="6" PointY="3.375" />
+        <EntityTypeShape EntityType="PMSModel.t_contactDosyalari" Width="1.5" PointX="8.25" PointY="14" />
+        <EntityTypeShape EntityType="PMSModel.t_iletisimIzinKayit" Width="1.5" PointX="8.25" PointY="5.5" />
+        <EntityTypeShape EntityType="PMSModel.t_iletisimIzinleri" Width="1.5" PointX="6" PointY="0.75" />
+        <EntityTypeShape EntityType="PMSModel.t_iletisimStatusu" Width="1.5" PointX="0.75" PointY="3.875" />
+        <EntityTypeShape EntityType="PMSModel.t_kampanyalar" Width="1.5" PointX="0.75" PointY="6.875" />
+        <EntityTypeShape EntityType="PMSModel.t_kullanici" Width="1.5" PointX="8.25" PointY="2.5" />
+        <EntityTypeShape EntityType="PMSModel.t_lead" Width="1.5" PointX="0.75" PointY="9.875" />
+        <EntityTypeShape EntityType="PMSModel.t_mulkModul" Width="1.5" PointX="15.25" PointY="8.25" />
+        <EntityTypeShape EntityType="PMSModel.t_mulkOzellik" Width="1.5" PointX="15.25" PointY="5.375" />
+        <EntityTypeShape EntityType="PMSModel.t_mulkTipi" Width="1.5" PointX="10.75" PointY="5.625" />
+        <EntityTypeShape EntityType="PMSModel.t_mulkTipiModul" Width="1.5" PointX="16" PointY="2.625" />
+        <EntityTypeShape EntityType="PMSModel.t_mulkTipiOzellik" Width="1.5" PointX="13" PointY="4.625" />
+        <EntityTypeShape EntityType="PMSModel.t_ozellik" Width="1.5" PointX="10.75" PointY="8.625" />
+        <EntityTypeShape EntityType="PMSModel.t_roller" Width="1.5" PointX="6" PointY="10.75" />
+        <EntityTypeShape EntityType="PMSModel.t_rolTablosu" Width="1.5" PointX="8.25" PointY="8.5" />
+        <EntityTypeShape EntityType="PMSModel.t_satisTipi" Width="1.5" PointX="8.75" PointY="11.875" />
+        <EntityTypeShape EntityType="PMSModel.t_tercihEdilenIletisim" Width="1.5" PointX="3.75" PointY="11.5" />
+        <EntityTypeShape EntityType="PMSModel.t_uyrukUlke" Width="1.5" PointX="3.75" PointY="3" />
+        <EntityTypeShape EntityType="PMSModel.t_yetkiGrubu" Width="1.5" PointX="3.75" PointY="5.625" />
+        <AssociationConnector Association="PMSModel.FK_t_contact_t_adres" />
+        <AssociationConnector Association="PMSModel.FK_t_contact_t_tercihEdilenIletisim" />
+        <AssociationConnector Association="PMSModel.FK_t_contact_t_uyrukUlke" />
+        <AssociationConnector Association="PMSModel.FK_t_contact_t_yetkiGrubu" />
+        <AssociationConnector Association="PMSModel.FK_t_contactDosyalari_t_contact" />
+        <AssociationConnector Association="PMSModel.FK_t_iletisimIzinKayit_t_contact" />
+        <AssociationConnector Association="PMSModel.FK_t_kullanici_t_contact" />
+        <AssociationConnector Association="PMSModel.FK_t_rolTablosu_t_contact" />
+        <AssociationConnector Association="PMSModel.FK_t_iletisimIzinKayit_t_iletisimIzinleri" />
+        <AssociationConnector Association="PMSModel.FK_t_kullanici_t_yetkiGrubu" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkOzellik_t_ozellik" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkTipiModul_t_mulkTipi" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkTipiOzellik_t_mulkTipi" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkTipiOzellik_t_ozellik" />
+        <AssociationConnector Association="PMSModel.FK_t_rolTablosu_t_roller" />
+        <EntityTypeShape EntityType="PMSModel.t_mulk" Width="1.5" PointX="13" PointY="8.375" />
+        <AssociationConnector Association="PMSModel.FK_t_mulk_t_mulkTipi" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkModul_t_mulk" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkOzellik_t_mulk" />
+        <EntityTypeShape EntityType="PMSModel.t_modul" Width="1.5" PointX="13.375" PointY="1.375" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkModul_t_modul" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkTipiModul_t_modul" />
+        <EntityTypeShape EntityType="PMSModel.t_mulkIMGs" Width="1.5" PointX="15.25" PointY="11.875" />
+        <AssociationConnector Association="PMSModel.FK_t_mulkIMGs_t_mulk" />
+        <EntityTypeShape EntityType="PMSModel.t_satisTipiModul" Width="1.5" PointX="17.625" PointY="6.5" />
+        <AssociationConnector Association="PMSModel.FK_t_satisTipiModul_t_modul" />
+        <AssociationConnector Association="PMSModel.FK_t_mulk_t_satisTipi" />
+        <AssociationConnector Association="PMSModel.FK_t_satisTipiModul_t_satisTipi" />
+        <EntityTypeShape EntityType="PMSModel.t_mulkAdres" Width="1.5" PointX="10.375" PointY="1" />
+        <AssociationConnector Association="PMSModel.FK_t_mulk_t_mulkAdres" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
