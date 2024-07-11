@@ -15,10 +15,10 @@ namespace EmlakYonetim.Models.Entity
     public partial class t_mulkTipiModul
     {
         public int id { get; set; }
-        public int mulkTipiID { get; set; }
+        public int mulktipiID { get; set; }
         public int modulID { get; set; }
     
-        public virtual t_mulkTipi t_mulkTipi { get; set; }
         public virtual t_modul t_modul { get; set; }
+        public virtual t_mulkTipi t_mulkTipi { get; set; }
     }
 }

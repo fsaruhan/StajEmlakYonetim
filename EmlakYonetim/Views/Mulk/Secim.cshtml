@@ -1,11 +1,18 @@
 ﻿@model EmlakYonetim.Models.ViewModels.MulkViewModel
+@using EmlakYonetim.Models.Entity
+@{
+    PMSEntities db = new PMSEntities();
+    var kullaniciId = Convert.ToInt32(User.Identity.Name);
+    var kullanici = db.t_contact.FirstOrDefault(x => x.id == kullaniciId);
+}
 <head>
     <link href="~/Content/Proje/Secim.css" rel="stylesheet" />
-<link href="~/Content/Proje/map.css" rel="stylesheet" />
+    <link href="~/Content/Proje/map.css" rel="stylesheet" />
 </head>
 <div>
     <div class="form-container" style="text-align:center; margin-top:25px; margin-bottom:25px;">
         <form method="post" action="@Url.Action("MulkEkle", "Mulk")" enctype="multipart/form-data">
+            <input type="hidden" value="@kullaniciId" name="SaticiID"/>
             <h1>Mülk tipiniz: <strong>@ViewBag.MulkTipiAdi</strong>, Satış tipiniz: <strong>@ViewBag.SatisTipiAdi</strong></h1>
             <hr />
             <div>
@@ -98,9 +105,9 @@
                         <span class="sb-title">Adres Seçiniz</span>
                     </div>
 
-                    <input type="text"  placeholder="Sokak görünümü için tam adresi giriniz" value="" id="location-input" />
-                    <input type="text" placeholder="ApartmanNO(Opsiyonel)" name="ApartmanNo" />
-                    <input type="text" placeholder="Sokak/Cadde" name="SokakCadde"/>
+                    <input type="text" placeholder="Sokak görünümü için tam adresi giriniz" value="" id="location-input" />
+                    <input type="text" placeholder="ApartmanNO( Opsiyonel)" name="ApartmanNo" />
+                    <input type="text" placeholder="Sokak/Cadde" name="SokakCadde" />
                     <input type="text" placeholder="İlçe" id="locality-input" name="Ilce" />
                     <div class="half-input-container">
                         <input type="text" class="half-input" name="Il" placeholder="Şehir" value="" id="administrative_area_level_1-input" />
@@ -120,14 +127,13 @@
             <input type="submit" style="padding:5px;" value="Mülkü Kaydet" />
 
         </form>
-    
+
     </div>
-    
+
 </div>
 
-    <style>
-        
-    </style>
+<style>
+</style>
 
 
 
@@ -219,7 +225,6 @@
             selectedCoordinates.lat = place.geometry.location.lat();
             selectedCoordinates.lng = place.geometry.location.lng();
 
-            // Gizli form alanlarını güncelle
             document.getElementById("latitude-input").value = selectedCoordinates.lat;
             document.getElementById("longitude-input").value = selectedCoordinates.lng;
         }

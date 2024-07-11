@@ -17,12 +17,15 @@ namespace EmlakYonetim.Models.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public t_roller()
         {
+            this.t_kullanici = new HashSet<t_kullanici>();
             this.t_rolTablosu = new HashSet<t_rolTablosu>();
         }
     
         public int id { get; set; }
         public string rolAdi { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<t_kullanici> t_kullanici { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<t_rolTablosu> t_rolTablosu { get; set; }
     }

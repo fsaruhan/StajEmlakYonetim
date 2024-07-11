@@ -7,13 +7,14 @@
 }
 
 <div style="margin-top:50px">
-    <h2 style="margin-top:-25px;">Kontakt Detayları</h2>
-    <img src="@Url.Content(Model.Gorsel)" class="rounded-circle" alt="Görsel" width="300" height="200">
-
-    <div class="container mt-3">
+    <div style="text-align:center">
+        <h2 style="margin-top:-25px;">Kontakt Detayları</h2>
+        <img src="@Url.Content(Model.Gorsel)" class="rounded-circle" alt="Görsel" width="300" height="200">
+    </div>
+    <div class="container mt-3" style="text-align:center">
         @if (Model.organizasyonMu)
         {
-            <p>@Model.organizasyonAdi adlı <strong>organizasyonun</strong> iletişim detayları</p>
+            <p style="text-align:center">@Model.organizasyonAdi adlı <strong>organizasyonun</strong> iletişim detayları</p>
             <table class="table table-striped table-bordered">
                 <thead class="bg-primary text-light">
                     <tr>
@@ -32,48 +33,80 @@
                 </tbody>
                 <thead>
                     <tr>
-                        <th>Ülke</th>
                         <th>Web Sitesi</th>
                         <th>Cep Telefonu</th>
+                        <th>E-mail</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>@Model.Ulke</td>
                         <td>@(string.IsNullOrEmpty(Model.website) ? "Bu organizasyon web siteye sahip değildir." : Model.website)</td>
-                        <td>@Model.cepTelefonu</td>
+                        <td>@(string.IsNullOrEmpty(Model.isTelefonu2) ? "Bu organizasyon için bir telefon belirtilmemiş." : Model.cepTelefonu)</td>
+                        <td>@(string.IsNullOrEmpty(Model.e_mail) ? "Bu organizasyon bir e-maile sahip değildir." : Model.e_mail)</td>
                     </tr>
                 </tbody>
                 <thead>
                     <tr>
-                        <th>E-mail - 2</th>
                         <th>İş Telefonu</th>
                         <th>İş Telefonu - 2</th>
+                        <th>Roller/Unvanlar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>@(string.IsNullOrEmpty(Model.e_mail2) ? "Bu organizasyon 2. bir e-maile sahip değildir." : Model.e_mail2)</td>
-                        <td>@Model.isTelefonu</td>
-                        <td>@(string.IsNullOrEmpty(Model.isTelefonu2.ToString()) ? "Bu organizasyon 2. bir iş telefonuna sahip değildir." : Model.isTelefonu2.ToString())</td>
+                        <td>@(string.IsNullOrEmpty(Model.isTelefonu) ? "Bu organizasyon bir iş telefonuna sahip değildir." : Model.isTelefonu)</td>
+                        <td>@(string.IsNullOrEmpty(Model.isTelefonu2) ? "Bu organizasyon 2. bir iş telefonuna sahip değildir." : Model.isTelefonu2)</td>
+                        <td>
+                            @if (ViewBag.KulaniciRolleri != null)
+                            {
+                                <ol>
+                                    @foreach (var rol in ViewBag.KullaniciRolleri)
+                                    {
+                                        <li>
+                                            <span style="vertical-align: middle;">@rol.rolAdi</span>
+                                            <span class="material-symbols-outlined" style="vertical-align: middle;">check_circle</span>
+                                        </li>
+                                    }
+                                </ol>
+                            }
+                            else
+                            {
+                                <p>Herhangi bir rol/ünvan mevcut değil.</p>
+                            }
+
+                        </td>
                     </tr>
                 </tbody>
                 <thead>
                     <tr>
-                        <th>Tercih Edilen İletişim</th>
-                        <th>Yetki Grubu</th>
-                        <th>Adres</th>
+                        <th colspan="3">Tercih Edilen İletişim</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>@Model.tercihEdilenIletisim</td>
-                        <td>@Model.yetkiGrubuID</td>
-                        <td>@Model.adresID</td>
+                        <td colspan="3">@(string.IsNullOrEmpty(Model.tercihEdilenIletisim.ToString()) ? "Tercih edilen iletişim belirtilmemiş." : ViewBag.MevcutIletisimListesi.tercihEdilenIletisimAdi)</td>
                     </tr>
                 </tbody>
                 <thead>
                     <tr>
+                        <th colspan="3">Yetki Grubu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @if (Model.yetkiGrubuID != null)
+                        {
+                        <td colspan="3">@ViewBag.MevcutYetki.yetkiGrubu</td>
+                        }
+                        else
+                        {
+                         <td colspan="3">Herhangi bir yetki grubuna dahil değil.</td>
+                        }
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
+
                         <th colspan="3" style="text-align: center">Description</th>
                     </tr>
                 </thead>
@@ -86,7 +119,7 @@
         }
         else
         {
-            <p>@Model.isim adlı <strong>kişinin</strong> iletişim detayları:</p>
+            <p style="text-align:center">@Model.isim adlı <strong>kişinin</strong> iletişim detayları:</p>
             <table class="table table-striped table-bordered">
                 <thead class="bg-primary text-light">
                     <tr>
@@ -119,8 +152,8 @@
                         {
                             <td>Herhangi bir organizasyona bağlı değil.</td>
                         }
-                        <td>@Model.e_mail</td>
-                        <td>@Model.cepTelefonu</td>
+                         <td>@(string.IsNullOrEmpty(Model.e_mail) ? "Bu kişi için bir e-mail belirtilmemiş." : Model.e_mail)</td>
+                        <td>@(string.IsNullOrEmpty(Model.cepTelefonu) ? "Cep telefon belirtilmemiş. " : Model.cepTelefonu)</td>
                     </tr>
                 </tbody>
                 <thead>
@@ -132,45 +165,42 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>@(string.IsNullOrEmpty(Model.e_mail) ? "Bu kişi 2. bir e-mail adresine sahip değildir." : Model.e_mail2)</td>
-                        <td>@(string.IsNullOrEmpty(Model.isTelefonu.ToString()) ? "Bu kişi bir iş telefonuna sahip değildir." : Model.isTelefonu.ToString())</td>
-                        <td>@(string.IsNullOrEmpty(Model.isTelefonu2.ToString()) ? "Bu kişi 2. bir iş telefonuna sahip değildir." : Model.isTelefonu2.ToString())</td>
+                        <td>@(string.IsNullOrEmpty(Model.e_mail2) ? "Bu kişi 2. bir e-mail adresine sahip değildir." : Model.e_mail2)</td>
+                        <td>@(string.IsNullOrEmpty(Model.isTelefonu) ? "Bu kişi bir iş telefonuna sahip değildir." : Model.isTelefonu)</td>
+                        <td>@(string.IsNullOrEmpty(Model.isTelefonu2) ? "Bu kişi 2. bir iş telefonuna sahip değildir." : Model.isTelefonu2)</td>
                     </tr>
                 </tbody>
                 <thead>
                     <tr>
                         <th>Tercih Edilen İletişim</th>
                         <th>Yetki Grubu</th>
-                        <th>Adres</th>
+                        <th>Roller/Unvanlar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>@Model.tercihEdilenIletisim</td>
-                        <td>@Model.yetkiGrubuID</td>
-                        <td>@Model.adresID</td>
-                    </tr>
-                </tbody>
-                <thead>
-                    <tr>
-                        <th colspan="3" style="text-align: center">Yetkiler</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="3" style="text-align: center">
-                            <ol>
-                                @foreach (var rol in ViewBag.KullaniciRolleri)
+                        <td>@(string.IsNullOrEmpty(Model.tercihEdilenIletisim.ToString()) ? "Tercih edilen iletişim belirtilmemiş." : ViewBag.MevcutIletisimListesi.tercihEdilenIletisimAdi)</td>
+                        <td>@(string.IsNullOrEmpty(Model.yetkiGrubuID.ToString()) ? "Yetki grubu mevcut değil." : ViewBag.MevcutYetki.yetkiGrubu)</td>
+                        <td>
+                            @if (ViewBag.KullaniciRolleri != null)
+                            {
+                                foreach (var rol in ViewBag.KullaniciRolleri)
                                 {
-                                    <li>
-                                        <span style="vertical-align: middle;">@rol.rolAdi</span>
-                                        <span class="material-symbols-outlined" style="vertical-align: middle;">check_circle</span>
-                                    </li>
+
+                                    <span style="vertical-align: middle">@rol.rolAdi</span>
+                                    <span class="material-symbols-outlined" style="vertical-align: middle;">check_circle</span>
+
                                 }
-                            </ol>
+                            }
+                            else
+                            {
+                                <p>Herhangi bir rol/unvan belirtilmemiş.</p>
+                            }
+
                         </td>
                     </tr>
                 </tbody>
+              
             </table>    
         }
 

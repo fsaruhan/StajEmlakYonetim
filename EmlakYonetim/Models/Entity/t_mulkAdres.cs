@@ -21,12 +21,14 @@ namespace EmlakYonetim.Models.Entity
         }
     
         public int id { get; set; }
-        public string sokak { get; set; }
-        public string cadde { get; set; }
+        public string sokakCadde { get; set; }
         public string apartmanNo { get; set; }
         public string il { get; set; }
         public string ilce { get; set; }
         public string ulke { get; set; }
+        public string postaKodu { get; set; }
+        public string lat { get; set; }
+        public string lonq { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<t_mulk> t_mulk { get; set; }

@@ -1,11 +1,11 @@
 ﻿@using EmlakYonetim.Models.ViewModels
-
+@using EmlakYonetim.Models.Entity
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2 style="text-align:center">Mülk Listesi</h2>
 <div class="container">
     <div class="row">
         @foreach (var item in Model)
@@ -47,11 +47,28 @@
                     <hr />
                     <!-- ------------------------- -->
                     <a style="text-align:center;" href="@Url.Action("IlanDetaylar","Mulk", new {mulkID = item.MulkId })" name="MulkID" class="btn btn-primary">Mülk Detayına Git</a>
-                    <a style="text-align:center;" href="@Url.Action("IlanDuzenle","Mulk", new {mulkID = item.MulkId })" name="MulkID" class="btn btn-success">Düzenle</a>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        {
+                            PMSEntities db = new PMSEntities();
+                            var kullaniciId = Convert.ToInt32(User.Identity.Name);
+                            var kullanici = db.t_contact.FirstOrDefault(x => x.id == kullaniciId);
+                            if (kullanici.yetkiGrubuID == 1 || kullaniciId == item.SaticiID)
+                            {
+                                <a style="text-align:center;" href="@Url.Action("IlanDuzenle","Mulk", new {mulkID = item.MulkId })" name="MulkID" class="btn btn-success">Düzenle</a>
+                            }
+
+                        }
+
+                    }
+
+
+
                 </div>
                 </div>
             </div>
-        }  
+        }
     </div>
 </div>
 @functions {

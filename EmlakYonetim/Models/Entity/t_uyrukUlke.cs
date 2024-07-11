@@ -20,7 +20,7 @@ namespace EmlakYonetim.Models.Entity
             this.t_contact = new HashSet<t_contact>();
         }
     
-        public int id { get; set; }
+        public string id { get; set; }
         public string uyrukAdi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

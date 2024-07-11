@@ -16,10 +16,10 @@ namespace EmlakYonetim.Models.Entity
     {
         public int id { get; set; }
         public int mulkID { get; set; }
-        public Nullable<int> modulID { get; set; }
+        public int modulID { get; set; }
         public string deger { get; set; }
     
-        public virtual t_mulk t_mulk { get; set; }
         public virtual t_modul t_modul { get; set; }
+        public virtual t_mulk t_mulk { get; set; }
     }
 }

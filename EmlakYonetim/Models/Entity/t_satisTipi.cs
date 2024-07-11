@@ -17,16 +17,16 @@ namespace EmlakYonetim.Models.Entity
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public t_satisTipi()
         {
-            this.t_mulk = new HashSet<t_mulk>();
             this.t_satisTipiModul = new HashSet<t_satisTipiModul>();
+            this.t_mulk = new HashSet<t_mulk>();
         }
     
         public int id { get; set; }
         public string satisTipiAdi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<t_mulk> t_mulk { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<t_satisTipiModul> t_satisTipiModul { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<t_mulk> t_mulk { get; set; }
     }
 }

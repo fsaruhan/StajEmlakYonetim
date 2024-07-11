@@ -1,0 +1,36 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<link href="~/Content/Proje/Login.css" rel="stylesheet" />
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+     
+        <div class="fadeIn first">
+            <img src="~/imgs/das/logo.png" id="icon" alt="User Icon" />
+            <h3>PANELE HOŞGELDİNİZ</h3>
+            <p style="color:darkred">@ViewBag.Mesaj</p>
+        </div>
+        
+       
+        <form method="post" action="@Url.Action("Login","Security")">
+            <input type="text"  id="login" class="fadeIn second" name="Email" placeholder="e-mail">
+            <input type="text" id="password" class="fadeIn third" name="Sifre" placeholder="şifre">
+            <input type="submit" class="fadeIn fourth" value="Giriş Yap">
+        </form>
+
+        
+        <div id="formFooter">
+            <a class="underlineHover" href="#">Şifremi Unuttum</a> <br />
+            <a class="underlineHover"href="@Url.Action("Index", "Mulk")">Ana Sayfaya Dön</a>
+        </div>
+
+    </div>
+</div>

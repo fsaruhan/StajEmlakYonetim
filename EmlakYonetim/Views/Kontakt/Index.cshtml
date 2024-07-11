@@ -5,6 +5,11 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    PMSEntities db = new PMSEntities();
+    var kullaniciId = Convert.ToInt32(User.Identity.Name);
+    var kullanici = db.t_contact.FirstOrDefault(x => x.id == kullaniciId);
+}
 
 <style>
 
@@ -14,8 +19,12 @@
         padding: 5px;
     }
 </style>
-<h1><a href="/Kontakt/Yeni" class="btn btn-success">Yeni Kontakt Ekle</a></h1>
-<h2>Kontakt Listesi</h2>
+@if (kullanici.yetkiGrubuID == 1)
+{
+    <h1 style="text-align:center"><a href="/Kontakt/Yeni" class="btn btn-success">Yeni Kontakt Ekle</a></h1>
+}
+
+<h2 style="text-align:center">Kontakt Listesi</h2>
 
 <table class="table table-bordered">
     <thead>
@@ -35,8 +44,23 @@
                 <td>@bilgi.id</td>
                 <td>@bilgi.isim @bilgi.soyAdi</td>
                 <td><a class="btn btn-primary" href="/Kontakt/Detay/@bilgi.id">Detay</a></td>
-                <td><a class="btn btn-info" href="/Kontakt/Guncelle/@bilgi.id">Guncelle</a></td>
-                <td><a class="btn btn-danger" href="#" onclick="silmeyiOnayla(@bilgi.id)">Sil</a></td>
+                @if (kullanici.yetkiGrubuID == 1)
+                {
+                    <td><a class="btn btn-info" href="/Kontakt/Guncelle/@bilgi.id">Guncelle</a></td>
+                }
+                else
+                {
+                    <td style="color:indianred"><strong>Güncelleme</strong> yetkiniz bulunmamaktadır.</td>
+                }
+                @if (kullanici.yetkiGrubuID == 1)
+                {
+                    <td><a class="btn btn-danger" href="#" onclick="silmeyiOnayla(@bilgi.id)">Sil</a></td>
+                }
+                else
+                {
+                    <td style="color:indianred"><strong>Silme</strong> yetkiniz bulunmamaktadır.</td>
+                }
+
             </tr>
         }
         else
@@ -45,28 +69,43 @@
                 <td>@bilgi.id</td>
                 <td>@bilgi.organizasyonAdi</td>
                 <td><a class="btn btn-primary" href="/Kontakt/Detay/@bilgi.id">Detay</a></td>
-                <td><a class="btn btn-info" href="/Kontakt/Guncelle/@bilgi.id">Guncelle</a></td>
-                <td><a class="btn btn-danger" href="#" onclick="silmeyiOnayla(@bilgi.id)">Sil</a></td>
+                @if (kullanici.yetkiGrubuID == 1)
+                {
+                    <td><a class="btn btn-info" href="/Kontakt/Guncelle/@bilgi.id">Guncelle</a></td>
+                }
+                else
+                {
+                    <td style="color:indianred"><strong>Güncelleme</strong> yetkiniz bulunmamaktadır.</td>
+                }
+                @if (kullanici.yetkiGrubuID == 1)
+                {
+                    <td><a class="btn btn-danger" href="#" onclick="silmeyiOnayla(@bilgi.id)">Sil</a></td>
+                }
+                else
+                {
+                    <td style="color:indianred"><strong>Silme</strong> yetkiniz bulunmamaktadır.</td>
+                }
             </tr>
 
         }
     }
-    <script>
-        function silmeyiOnayla(contactId) {
-            if (confirm("Bu kişiyi silmek istediğinize emin misiniz?")) {
-         
-                $.post("/Kontakt/Sil", { contactId: contactId })
-                    .done(function (response) {
-                        alert("Başarıyla silindi.")
-                        location.reload();
-                    })
-                    .fail(function (error) {
-                        alert("Silme işlemi gerçekleşmedi.")
-                        console.log(error);
-                    });
 
-            }
-        }
-    </script>
 </table>
 
+<script>
+    function silmeyiOnayla(contactId) {
+        if (confirm("Bu kişiyi silmek istediğinize emin misiniz?")) {
+
+            $.post("/Kontakt/Sil", { contactId: contactId })
+                .done(function (response) {
+                    alert("Başarıyla silindi.")
+                    location.reload();
+                })
+                .fail(function (error) {
+                    alert("Silme işlemi gerçekleşmedi.")
+                    console.log(error);
+                });
+
+        }
+    }
+</script>

@@ -35,6 +35,9 @@ namespace EmlakYonetim.Models.Entity
         public virtual DbSet<t_kampanyalar> t_kampanyalar { get; set; }
         public virtual DbSet<t_kullanici> t_kullanici { get; set; }
         public virtual DbSet<t_lead> t_lead { get; set; }
+        public virtual DbSet<t_modul> t_modul { get; set; }
+        public virtual DbSet<t_mulkAdres> t_mulkAdres { get; set; }
+        public virtual DbSet<t_mulkIMGs> t_mulkIMGs { get; set; }
         public virtual DbSet<t_mulkModul> t_mulkModul { get; set; }
         public virtual DbSet<t_mulkOzellik> t_mulkOzellik { get; set; }
         public virtual DbSet<t_mulkTipi> t_mulkTipi { get; set; }
@@ -44,13 +47,10 @@ namespace EmlakYonetim.Models.Entity
         public virtual DbSet<t_roller> t_roller { get; set; }
         public virtual DbSet<t_rolTablosu> t_rolTablosu { get; set; }
         public virtual DbSet<t_satisTipi> t_satisTipi { get; set; }
+        public virtual DbSet<t_satisTipiModul> t_satisTipiModul { get; set; }
         public virtual DbSet<t_tercihEdilenIletisim> t_tercihEdilenIletisim { get; set; }
         public virtual DbSet<t_uyrukUlke> t_uyrukUlke { get; set; }
         public virtual DbSet<t_yetkiGrubu> t_yetkiGrubu { get; set; }
         public virtual DbSet<t_mulk> t_mulk { get; set; }
-        public virtual DbSet<t_modul> t_modul { get; set; }
-        public virtual DbSet<t_mulkIMGs> t_mulkIMGs { get; set; }
-        public virtual DbSet<t_satisTipiModul> t_satisTipiModul { get; set; }
-        public virtual DbSet<t_mulkAdres> t_mulkAdres { get; set; }
     }
 }

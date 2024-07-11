@@ -1,7 +1,18 @@
-﻿@{
+﻿@using EmlakYonetim.Models.Entity;
+
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .container hr {
+        width: 285px;
+        border-color: black;
+        margin-left: 385px;
+        position: relative;
+    }
+
+</style>
 <head>
     <link href="~/Content/TestIndex.css" rel="stylesheet" />
 </head>
@@ -73,6 +84,43 @@
             }
         </div>
 
+        <div style="position: relative; top:50px; border: 1px solid gray; margin-right:600px; margin-left: 15px; text-align:center;" >
+            <h2>İlan İletişim</h2>
+            <div class="profile-container">
+                <hr style="right:267px; / ">
+                <div>
+                    <img class="rounded-circle" src="@Url.Content(ViewBag.SaticiBilgileri.Gorsel)" style="width:150px; height:125px;" />
+                </div>
+                <hr style="right:267px;" />
+                <div class="contact-info">
+                    <div>
+                        <p> <span class="material-symbols-outlined">
+                         contacts
+                        </span>
+                        Kontakt Adı: <strong>@(string.IsNullOrEmpty(ViewBag.SaticiBilgileri.isim) ? (ViewBag.SaticiBilgileri.organizasyonAdi): ViewBag.SaticiBilgileri.isim + " " + ViewBag.SaticiBilgileri.soyAdi)</strong> </p>
+                    </div>
+                    <div>
+                        
+                        <p>
+                            <span class="material-symbols-outlined">
+                                call
+                            </span>
+                            İş Telefonu: <strong>@ViewBag.SaticiBilgileri.isTelefonu</strong>
+                        </p>
+                    </div>
+                    <div>
+                        
+                        <p>
+                            <span class="material-symbols-outlined">
+                                phone_iphone
+                            </span>
+                            Cep Telefonu: <strong>@ViewBag.SaticiBilgileri.cepTelefonu</strong>
+                        </p>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
 
         <div class="container" style="position: relative; top:50px;">
             <h2><strong>İlan Açıklaması</strong></h2>
@@ -82,7 +130,7 @@
             {
                 if (item.ozellikAtama != null && item.ozellikAtama == 0)
                 {
-                    <h3>@item.ozellikAdi</h3>
+                    <h4>@item.ozellikAdi</h4>
                     <p>
                         @foreach (var ozellik in ViewBag.Ozellikler)
                         {
@@ -96,6 +144,29 @@
                 <div class="horizontal-line"></div>
             }
         </div>
+        <div class="container" style="position: relative; top:100px;">
+            <div> <h3 style="text-align:center">ADRES VE HARİTA GÖRÜNÜMÜ</h3></div>
+            <div style="text-align:center">
+                <strong>Sokak/Cadde:</strong> @ViewBag.Adres.sokakCadde
+                <hr />
+                <strong>Apartman No:</strong>
+                @if (ViewBag.Adres.apartmanNo != null)
+                {
+                    @ViewBag.Adres.apartmanNo
+                }
+                else
+                {
+                    <a>Bilgi verilmemiştir.</a>
+                }
+                <hr />
+                <a> <strong>İl/İlçe:</strong> @ViewBag.Adres.il/@ViewBag.Adres.ilce</a>
+                <hr />
+                <a> <strong>Ülke:</strong> @ViewBag.Adres.ulke</a>
+                <hr />
+                <a> <strong>Posta Kodu:</strong> @ViewBag.Adres.postaKodu</a>
+            </div>
+            <div id="street-view" style="width: 90%;  height:500px; top:15px;"></div>
+        </div>
 
     </div>
 </div>
@@ -105,3 +176,26 @@
         return string.Format("{0:N0}", number);
     }
 }
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZGMIJ_T7t1koK_uUE23_MeUziWworYvI"></script>
+<script>
+        function initMap() {
+            var latitude = parseFloat('@ViewBag.Adres.lat');
+            var longitude = parseFloat('@ViewBag.Adres.lonq');
+
+            var mapOptions = {
+                center: { lat: latitude, lng: longitude },
+                zoom: 20  
+            };
+
+            var map = new google.maps.Map(document.getElementById('street-view'), mapOptions);
+
+            var marker = new google.maps.Marker({
+                position: { lat: latitude, lng: longitude },
+                map: map,
+                title: 'Seçilen Konum'
+            });
+        }
+</script>
+<script>
+    google.maps.event.addDomListener(window, 'load', initMap);
+</script>

@@ -1,11 +1,30 @@
 ﻿@using EmlakYonetim.Models.ViewModels
+@using EmlakYonetim.Models.Entity
 @model MulkDuzenleViewModel
 @{
     ViewBag.Title = "IlanDuzenle";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .red-text {
+        color: darkred;
+    }
+</style>
+@{
+    PMSEntities db = new PMSEntities();
+    var kullaniciId = Convert.ToInt32(User.Identity.Name);
+    var kullanici = db.t_contact.FirstOrDefault(x => x.id == kullaniciId);
+    var kullaniciYetki = db.t_kullanici.FirstOrDefault(x => x.kayit_id == kullaniciId);
+}
+<link href="~/Content/Proje/map.css" rel="stylesheet" />
 <h2 style="text-align:center">@Model.MulkID - numaralı ilanın düzenleme sayfası</h2>
-
+<hr />
+<div style="text-align:center">
+    <form method="post" action="@Url.Action("IlanSil","Mulk")">
+        <button class="btn btn-danger"> İLANI TAMAMEN KALDIR </button>
+        <input type="hidden" value="@Model.MulkID" name="MulkID" />
+    </form>
+</div>
 <div class="container">
     <hr />
     <h3 style="text-align:center">Fotograflar</h3>
@@ -56,53 +75,91 @@
         </form>
     </div>
     <hr />
+    @if (kullaniciYetki.yetkiGrubu == 1 )
+    {
+        <div class="mt-4" style="position:relative; text-align:center;">
+            <h4 style="text-align:center">İlgili Satıcı Bilgisi</h4>
+            <form method="post" action="@Url.Action("SaticiAta","Mulk")">
+                <select class="form-select" style="text-align:center" name="SaticiID">
+                    @if (Model.MevcutKullanici.organizasyonMu)
+                    {
+                        <option>Mevcut satıcı: (@Model.MevcutKullanici.id) @Model.MevcutKullanici.organizasyonAdi</option>
+                    }
+                    else
+                    {
+                        <option>Mevcut satıcı: (@Model.MevcutKullanici.id) @Model.MevcutKullanici.isim @Model.MevcutKullanici.soyAdi</option>
+                    }
+                    @foreach (var satici in Model.Kullanicilar)
+                    {
+                        if (satici.t_contact.organizasyonMu && satici.id != Model.MevcutKullanici.id)
+                        {
+                            <option value="@satici.t_contact.id">(@satici.t_contact.id) @satici.t_contact.organizasyonAdi</option>
+                        }
+                        else if (satici.id != Model.MevcutKullanici.id)
+                        {
+                            
+                <option value="@satici.t_contact.id">(@satici.t_contact.id) @satici.t_contact.isim @satici.t_contact.soyAdi</option>
+
+                        }
+
+                    }
+
+                </select>
+                <input type="hidden" value="@Model.MulkID" name="MulkID" />
+                <button class="btn btn-primary btn-sm mt-2" style="position:relative;" type="submit">Satıcıyı Değiştir.</button>
+            </form>
+        </div>
+        <hr />
+    }
+
     <h4 style="text-align:center">Mülk Bilgileri</h4>
     <hr />
-    <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
+    <form method="post" action="@Url.Action("IlanYeniKaydet", "Mulk")">
+        <input type="hidden" name="MulkID" value="@Model.MulkID" />
+        <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
+            <label>Mülk Başlığı:</label>
+            <input class="form-control" style="text-align:center;" value="@Model.Mulk.mulkBaslik" name="MulkBaslik" />
+            <label>Mülk Açıklaması:</label>
+            <textarea style="height:150px; text-align:center;" class="form-control" name="MulkAciklama">@Model.Mulk.aciklama</textarea>
+        </div>
+        <hr />
+        <h4 style="text-align:center">Mülk Özellikleri</h4>
+        <hr />
+        <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
 
-        <label>Mülk Başlığı:</label>
-        <input class="form-control" style="text-align:center;" value="@Model.Mulk.mulkBaslik" name="MulkBaslik" />
-        <label>Mülk Açıklaması:</label>
-        <textarea style="height:150px; text-align:center;" class="form-control" name="MulkAciklama">@Model.Mulk.aciklama</textarea>
-
-    </div>
-    <hr />
-    <h4 style="text-align:center">Mülk Özellikleri</h4>
-    <hr />
-    <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
-
-        @foreach (var mulkTipiOzellik in Model.MulkTipiOzellik)
-        {
-            <h3>@mulkTipiOzellik.t_ozellik.ozellikAdi</h3>
-
-            foreach (var ozellik in Model.TumOzellikler)
+            @foreach (var mulkTipiOzellik in Model.MulkTipiOzellik)
             {
-                bool ozellikSecilmis = Model.MulkOzellikler.Any(d => d.id == ozellik.id);
-                if (ozellik.ozellikAtama == mulkTipiOzellik.t_ozellik.id)
+                <h3>@mulkTipiOzellik.t_ozellik.ozellikAdi</h3>
+
+                foreach (var ozellik in Model.TumOzellikler)
                 {
-                    <label for="TumOzellikler">@ozellik.ozellikAdi</label>
-                    <input type="checkbox" name="TumOzellikler" value="@ozellik.id" @(ozellikSecilmis ? "checked" : "") />
+                    bool ozellikSecilmis = Model.MulkOzellikler.Any(d => d.id == ozellik.id);
+                    if (ozellik.ozellikAtama == mulkTipiOzellik.t_ozellik.id)
+                    {
+                        <label for="SecilenOzellikler">@ozellik.ozellikAdi </label>
+                        <input type="checkbox" name="SecilenOzellikler" value="@ozellik.id" @(ozellikSecilmis ? "checked" : "") />
+                    }
+
                 }
-
+                <hr />
             }
-            <hr />
-        }
-    </div>
+        </div>
 
-    <hr />
-    <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
-        
+        <hr />
+        <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
+            <h2>MODÜLLER</h2>
+            <hr />
             @foreach (var modul in Model.TumModuller)
             {
-                var dahiliModuller = Model.MulkModuller.FirstOrDefault(x => x.modulID == modul.id);
-                
+                var dahiliModuller = Model.MulkModuller.FirstOrDefault(x => x.modulID == modul.id && x.mulkID == Model.MulkID);
+
                 if (dahiliModuller != null && modul.id == dahiliModuller.modulID)
                 {
                     if (modul.degerler != null)
                     {
                         string[] degerler = modul.degerler.Split(',');
                         <label>@modul.modulAdi:</label>
-                        <select name="SecilenModuller">
+                        <select name="SecilenDeger">
                             <option value="">@dahiliModuller.deger</option>
                             @foreach (var deger in degerler)
                             {
@@ -118,45 +175,166 @@
                     }
                     else
                     {
-                        <label for="GirilenModuller">@modul.modulAdi:</label>
-                        <input type="text" class="form-control" name="GirilenModuller" value="@dahiliModuller.deger" style="width:150px; text-align:center; margin-left:446px;" />
+                        <label for="GirilenDeger">@modul.modulAdi:<input type="text" class="form-control" name="GirilenDeger" value="@dahiliModuller.deger" style="width:150px; text-align:center;" /></label>
                         <input type="hidden" value="@modul.id" name="InputModulID" />
                         <br />
                     }
                 }
-                else 
+                else
                 {
                     if (modul.degerler != null)
                     {
                         string[] degerler = modul.degerler.Split(',');
                         <label>@modul.modulAdi:</label>
-                        <select name="SecilenModuller">
+                        <select name="YeniSecilenDeger">
                             <option value="">Yeni Modül, seçiniz.</option>
                             @foreach (var deger in degerler)
                             {
-                              
-                                    <option value="@deger">@deger</option>
-                                
-
+                                <option value="@deger">@deger</option>
                             }
                         </select>
-                        <input type="hidden" value="@modul.id" name="DropDownModulID" />
+                        <input type="hidden" value="@modul.id" name="YeniDropDownModulID" />
+
+
                         <br />
                     }
                     else
                     {
-                        <label for="GirilenModuller">@modul.modulAdi:</label>
-                        <input type="text" class="form-control" name="GirilenModuller" value="Yeni modül. Değer giriniz." style="width:150px; text-align:center; margin-left:446px;" />
-                        <input type="hidden" value="@modul.id" name="InputModulID" />
+                        <label for="YeniGirilenModuller">@modul.modulAdi:<input type="text" class="form-control" name="YeniGirilenDeger" value="Yeni modül. Değer giriniz." style="width:150px; text-align:center;" /></label>
+                        <input type="hidden" value="@modul.id" name="YeniInputModulID" />
                         <br />
                     }
                 }
-                 
-            }
-        
-        <hr />
-    </div>
-</div>
 
+            }
+
+            <hr />
+            <div class="mt-4" style="position:relative; text-align:center; justify-content:center;">
+                <h2>ADRESİ VE KONUMU DÜZENLE</h2>
+                <div class="card-container" style="position:relative; margin-left:250px;    ">
+                    <div class="panel">
+                        <div>
+                            <img class="sb-title-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
+                            <span class="sb-title">Mevcut Adres (<strong>Değiştirmemek istemediğiniz alanları boş bırakınız.</strong>)</span>
+                        </div>
+                        <input type="text" placeholder="Konumu değiştirmemek için boş bırakın." value="" id="location-input" />
+                        <input type="text" placeholder="@if (@Model.ApartmanNo != null) {@Model.ApartmanNo} else {@Html.Raw("Apartman No belirtilmemiş.");}" name="ApartmanNo" />
+                        <input type="text" placeholder="@if (@Model.SokakCadde != null) {@Model.SokakCadde} else {@Html.Raw("Sokak/Cadde belirtilmemiş.");}" name="SokakCadde" />
+                        <input type="text" placeholder="@if (@Model.Ilce != null) {@Model.Ilce} else {@Html.Raw("İlçe belirtilmemiş.");}" name="Ilce" />
+                        <div class="half-input-container">
+                            <input type="text" class="half-input" name="Il" placeholder="@Model.Il" value="" id="administrative_area_level_1-input" />
+                            <input type="text" class="half-input" name="PostaKodu" value="" placeholder="Postakodu: @Model.PostaKodu" id="postal_code-input" />
+                        </div>
+                        <input type="text" placeholder="@Model.Ulke" name="Ulke" value="" id="country-input" />
+                        <input type="hidden" name="Latitude" id="latitude-input" value="">
+                        <input type="hidden" name="Longitude" id="longitude-input" value="">
+                    </div>
+                    <div class="map" id="gmp-map"></div>
+                </div>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZGMIJ_T7t1koK_uUE23_MeUziWworYvI&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>
+            </div>
+        </div>
+        <button type="submit" style="margin-left:500px;">KAYDET</button>
+    </form>
+</div>
+<script>
+    let selectedCoordinates = {
+        lat: @Model.Latitude,
+        lng: @Model.Longitude
+    };
+
+    "use strict";
+
+    function initMap() {
+        const CONFIGURATION = {
+            "ctaTitle": "Checkout",
+            "mapOptions": { "center": { "lat": @Model.Latitude, "lng": @Model.Longitude }, "fullscreenControl": true, "mapTypeControl": false, "streetViewControl": true, "zoom": 20, "zoomControl": true, "maxZoom": 35, "mapId": "" },
+            "mapsApiKey": "AIzaSyDZGMIJ_T7t1koK_uUE23_MeUziWworYvI",
+            "capabilities": { "addressAutocompleteControl": true, "mapDisplayControl": true, "ctaControl": true }
+        };
+        const componentForm = [
+            'location',
+            'locality',
+            'administrative_area_level_1',
+            'country',
+            'postal_code',
+
+        ];
+
+        const getFormInputElement = (component) => document.getElementById(component + '-input');
+        const map = new google.maps.Map(document.getElementById("gmp-map"), {
+
+            zoom: CONFIGURATION.mapOptions.zoom,
+            center: { lat: @Model.Latitude, lng: @Model.Longitude },
+            mapTypeControl: false,
+            fullscreenControl: CONFIGURATION.mapOptions.fullscreenControl,
+            zoomControl: CONFIGURATION.mapOptions.zoomControl,
+            streetViewControl: CONFIGURATION.mapOptions.streetViewControl
+        });
+        const marker = new google.maps.Marker({ map: map, position: { lat: @Model.Latitude, lng: @Model.Longitude }, draggable: true }); //
+        const autocompleteInput = getFormInputElement('location');
+        const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
+
+            fields: ["address_components", "geometry", "name"],
+            types: ["address"],
+        });
+        autocomplete.addListener('place_changed', function () {
+            marker.setVisible(false);
+            const place = autocomplete.getPlace();
+            if (!place.geometry) {
+                window.alert('No details available for input: \'' + place.name + '\'');
+                return;
+            }
+            renderAddress(place);
+            fillInAddress(place);
+
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            console.log('Selected Coordinates:', latitude, longitude);
+        });
+
+        function fillInAddress(place) {  // optional parameter
+            const addressNameFormat = {
+                'street_number': 'short_name',
+                'route': 'long_name',
+                'locality': 'long_name',
+                'administrative_area_level_1': 'short_name',
+                'country': 'long_name',
+                'postal_code': 'short_name',
+            };
+            const getAddressComp = function (type) {
+                for (const component of place.address_components) {
+                    if (component.types[0] === type) {
+                        return component[addressNameFormat[type]];
+                    }
+                }
+                return '';
+            };
+            getFormInputElement('location').value = getAddressComp('street_number') + ' '
+                + getAddressComp('route');
+            for (const component of componentForm) {
+                // Location field is handled separately above as it has different logic.
+                if (component !== 'location') {
+                    getFormInputElement(component).value = getAddressComp(component);
+                }
+            }
+        }
+
+        function renderAddress(place) {
+            map.setCenter(place.geometry.location);
+            map.setZoom(19);
+            marker.setPosition(place.geometry.location);
+            marker.setVisible(true);
+            selectedCoordinates.lat = place.geometry.location.lat();
+            selectedCoordinates.lng = place.geometry.location.lng();
+
+            // Gizli form alanlarını güncelle
+            document.getElementById("latitude-input").value = selectedCoordinates.lat;
+            document.getElementById("longitude-input").value = selectedCoordinates.lng;
+        }
+
+
+    }
+</script>
 
 

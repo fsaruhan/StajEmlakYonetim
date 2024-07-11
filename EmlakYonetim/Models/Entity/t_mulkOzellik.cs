@@ -15,8 +15,8 @@ namespace EmlakYonetim.Models.Entity
     public partial class t_mulkOzellik
     {
         public int id { get; set; }
-        public Nullable<int> mulkID { get; set; }
-        public Nullable<int> ozellikID { get; set; }
+        public int mulkID { get; set; }
+        public int ozellikID { get; set; }
     
         public virtual t_ozellik t_ozellik { get; set; }
         public virtual t_mulk t_mulk { get; set; }

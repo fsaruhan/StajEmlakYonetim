@@ -51,7 +51,7 @@ namespace EmlakYonetim.Controllers
                 var yeniModulMulkTipi = new t_mulkTipiModul()
                 {
                     modulID = yeniModul.id,
-                    mulkTipiID = mulkTipi
+                    mulktipiID = mulkTipi
                 }; 
                 db.t_mulkTipiModul.Add(yeniModulMulkTipi);
 
@@ -73,6 +73,7 @@ namespace EmlakYonetim.Controllers
                     db.SaveChanges();
                 }
 
+                
                 db.SaveChanges();
                 
                 return RedirectToAction("Index");
@@ -87,7 +88,7 @@ namespace EmlakYonetim.Controllers
         {
             var modul = db.t_modul.FirstOrDefault(i => i.id == ModulID);
             var mulkTipiModul = db.t_mulkTipiModul.FirstOrDefault(m => m.modulID == ModulID);
-            var mulkModul = db.t_mulkModul.FirstOrDefault(m => m.modulID == ModulID);
+            var mulkModul = db.t_mulkModul.Where(m => m.modulID == ModulID);
             var satisTipiModul = db.t_satisTipiModul.Where(m => m.modulID == ModulID);
 
         
@@ -99,7 +100,7 @@ namespace EmlakYonetim.Controllers
                 db.t_satisTipiModul.RemoveRange(satisTipiModul);
                 if (mulkModul != null)
                 {
-                    db.t_mulkModul.Remove(mulkModul);
+                    db.t_mulkModul.RemoveRange(mulkModul);
                 }
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -187,7 +188,7 @@ namespace EmlakYonetim.Controllers
             if (mulkTipiID != 0)
             {
                 var yeniMulkTipi = db.t_mulkTipiModul.FirstOrDefault(y => y.modulID == modulID);
-                yeniMulkTipi.mulkTipiID = mulkTipiID;
+                yeniMulkTipi.mulktipiID = mulkTipiID;
                 db.SaveChanges();
             }
             if (modulAdi != null)

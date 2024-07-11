@@ -24,6 +24,7 @@ namespace EmlakYonetim.Models.ViewModels
         public List <string> GirilenModuller { get; set; }
         public List <int> InputModulID { get; set; }
         public List<int> DropDownModulID { get; set; }
+        public int SaticiID { get; set; }
         public List<HttpPostedFileBase> Gorseller { get; set; }
         public string SokakCadde { get; set; }
         public string ApartmanNo { get; set; }
@@ -32,6 +33,6 @@ namespace EmlakYonetim.Models.ViewModels
         public string Ulke { get; set; }
         public string PostaKodu { get; set; }
         public string Latitude { get; set; }
-        public string Longitude { get; set; }
+        public string Longitude { get; set; }   
     }   
 }

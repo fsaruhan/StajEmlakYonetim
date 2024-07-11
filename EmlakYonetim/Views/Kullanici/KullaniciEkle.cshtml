@@ -1,0 +1,111 @@
+﻿@using EmlakYonetim.Models.Entity
+
+@{
+    ViewBag.Title = "KullaniciEkle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link href="~/Content/Proje/KullaniciEkle.css" rel="stylesheet" />
+</head>
+<body>
+    <form method="post" action="@Url.Action("KullaniciEKle","Kullanici")">
+        <div class="kullanici-container">
+            <div class="container-c">
+                <div class="brand-logo">
+                    <img style="width:100px;height:100px;" src="~/imgs/design/user-add.png" />
+                </div>
+                <div class="brand-title">KULLANICI EKLE</div>
+                <div class="inputs">
+                    <div style="text-align:center;" class="dropdown-c">
+                        <button type="button" class="dropdown-c-toggle">İletişim Kaydı Seçiniz</button>
+                        <select class="dropdown-c-menu" name="SecilenKayit" onchange="secilenKayit(this)">
+                            <option class="dropdown-c-item" style="background-color:grey" value="">Seçiniz</option>
+                            @foreach (var item in Model)
+                            {
+                                bool organizasyonMu = item.organizasyonMu;
+                                if (organizasyonMu)
+                                {
+                                    <option style="background-color:darksalmon" class="dropdown-c-item" data-organizasyonmu="true" value="@item.id">ID: @item.id - @item.organizasyonAdi</option>
+
+                                }
+                                else
+                                {
+                                    <option style="background-color:mintcream" class="dropdown-c-item" data-organizasyonmu="false" value="@item.id">ID: @item.id - @item.isim</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                    <label>Sistemi Kullanacak Kişi & Organizasyon</label>
+                    <input type="text" id="secilenKisi" placeholder="Sistemi Kullanacak Kaydı Seçiniz" readonly />
+
+                    <div style="text-align:center; top:5px; left:100px;" class="dropdown-c">
+                        <button type="button" class="dropdown-c-toggle">Yetki Seçiniz</button>
+                        <select class="dropdown-c-menu" name="SecilenYetki" onchange="verilenYetki(this)">
+                            <option class="dropdown-c-item" style="background-color:grey" value="">Seçiniz</option>
+                            @foreach (var yetki in ViewBag.Roller)
+                            {
+                                if (yetki.yetkiGrubu == "Admin")
+                                {
+                                    <option style="background-color:orangered" class="dropdown-c-item" value="@yetki.id">@yetki.yetkiGrubu</option>
+                                }
+                                else
+                                {
+                                    <option style="background-color:mintcream" class="dropdown-c-item" value="@yetki.id">@yetki.yetkiGrubu</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <label>Verilen Yetki</label>
+                    <input type="text" id="secilenYetki" placeholder="Yetki veriniz." onchange="" readonly />
+                    <label>EMAIL</label>
+                    <input type="email" name="Email" placeholder="ornek@testmail.com" />
+                    <label>ŞİFRE OLUŞTURUN</label>
+                    <input name="Sifre" placeholder="Minimum 6 karakter uzunluğunda" />
+                    <button type="submit">KULLANICIYI OLUŞTUR</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+
+    <script>
+        function verilenYetki(selectElement) {
+            var selectedText = selectElement.options[selectElement.selectedIndex].text;
+            var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+
+            if (selectedValue !== "") {
+                if (selectedText === "Admin") {
+                    document.getElementById("secilenYetki").value = "DİKKAT! TAM YETKİ: " + selectedText;
+                } else {
+                    document.getElementById("secilenYetki").value = "Verilen Yetki: " + selectedText;
+                }
+            } else {
+                document.getElementById("secilenYetki").value = "";
+            }
+        }
+
+
+        function secilenKayit(selectElement) {
+            var selectedValue = selectElement.value;
+            var selectedText = selectElement.options[selectElement.selectedIndex].text;
+            var organizasyonMu = selectElement.options[selectElement.selectedIndex].getAttribute('data-organizasyonmu') === 'true';
+
+            if (selectedValue !== "") {
+                if (organizasyonMu) {
+                    document.getElementById("secilenKisi").value = "Organizasyon: " + selectedText;
+                } else {
+                    document.getElementById("secilenKisi").value = "Kişi: " + selectedText;
+                }
+            } else {
+                document.getElementById("secilenKisi").value = "";
+            }
+        }
+
+    </script>
+
+
+
+</body>

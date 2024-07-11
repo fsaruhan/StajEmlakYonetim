@@ -15,11 +15,14 @@ namespace EmlakYonetim.Models.Entity
     public partial class t_kullanici
     {
         public int id { get; set; }
-        public string kullaniciAdi { get; set; }
+        public int kayit_id { get; set; }
+        public string email { get; set; }
         public string sifre { get; set; }
         public int yetkiGrubu { get; set; }
+        public System.DateTime tarih { get; set; }
     
         public virtual t_contact t_contact { get; set; }
+        public virtual t_roller t_roller { get; set; }
         public virtual t_yetkiGrubu t_yetkiGrubu { get; set; }
     }
 }

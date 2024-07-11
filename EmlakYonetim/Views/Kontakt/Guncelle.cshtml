@@ -1,6 +1,344 @@
-﻿@model EmlakYonetim.Models.Entity.t_contact
+﻿@using EmlakYonetim.Models.Entity
+@model  EmlakYonetim.Models.Entity.t_contact
+
+
 @{
-    ViewBag.Title = "Yeni";
+    ViewBag.Title = "Detay";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<i class="bi bi-alexa"></i>
+
+<div style="margin-top:50px">
+    <div style="text-align:center">
+        <h2 style="margin-top:-25px;">Kontakt Detayları</h2>
+        
+    </div>
+    <div class="container mt-3" style="text-align:center">
+        @if (Model.organizasyonMu)
+        {
+        <form method="post" action="@Url.Action("Guncelle","Kontakt")" enctype="multipart/form-data">
+            <input type="hidden" value="@Model.id" name="KontaktID"/>
+            <img src="@Url.Content(Model.Gorsel)" class="rounded-circle" alt="Görsel" width="250" height="200">
+            <p style="text-align:center">@Model.organizasyonAdi adlı <strong>organizasyonun</strong> bilgilerini değiştirmek istediğiniz yerleri doldurun, değilse boş bırakın.</p>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Fotoğrafı değiştirmek için ilgili görseli yükleyiniz.</label>
+                <input style="position:relative; margin-left:475px" name="Gorsel" type="file" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+            <table class="table table-striped table-bordered">
+                <thead class="bg-primary text-light">
+                    <tr>
+                        <th>Organizasyon Adı</th>
+                        <th>Vergi NO:</th>
+                        <th>Kayıt NO:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td><input type="text" style="text-align:center" class="form-control" name="OrganizasyonAdi" placeholder="@Model.organizasyonAdi" /></td>
+                        <td><input type="text" style="text-align:center" class="form-control" name="VergiNo" placeholder="@Model.vergiNo" /></td>
+                        <td><input type="text" style="text-align:center" class="form-control" name="KayitNo" placeholder="@Model.kayitNo" /></td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
+
+                        <th>Web Sitesi</th>
+                        <th>Cep Telefonu</th>
+                        <th>E-mail</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td><input type="text" style="text-align:center" class="form-control" name="WebSitesi" placeholder="@(string.IsNullOrEmpty(Model.website) ? "Bu organizasyon web siteye sahip değildir." : Model.website)" /></td>
+                        <td><input type="text" style="text-align:center" class="form-control" name="CepTelefonu" placeholder="@(string.IsNullOrEmpty(Model.cepTelefonu) ? "Cep telefonu belirtilmemiş." : Model.cepTelefonu)" /></td>
+                        <td><input type="text" style="text-align:center" class="form-control" name="Email" placeholder="@(string.IsNullOrEmpty(Model.e_mail) ? "Bu organizasyon e-maile sahip değildir." : Model.e_mail)" /></td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
+
+                        <th>İş Telefonu</th>
+                        <th>İş Telefonu - 2</th>
+                        <th>Roller/Unvanlar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" style="text-align:center" class="form-control" name="IsTelefonu" placeholder="@(string.IsNullOrEmpty(Model.isTelefonu) ? "Bu organizasyon iş telefonuna sahip değildir." : Model.isTelefonu)" /></td>
+                        <td><input type="text" style="text-align:center" class="form-control" name="IsTelefonu2" placeholder="@(string.IsNullOrEmpty(Model.isTelefonu2) ? "Bu organizasyon 2. iş telefonuna sahip değildir." : Model.isTelefonu2)" /></td>
+                        <td>
+
+                            @foreach (var rol in ViewBag.Roller)
+                            {
+                                bool modulMu = false;
+                                if (ViewBag.RolTablosu.Contains(rol.id))
+                                {
+                                    modulMu = true;
+                                }
+
+                                <label for="SecilenRoller">@rol.rolAdi </label>
+                                <input type="checkbox" name="RollerUnvanlar" value="@rol.id" @(modulMu ? "checked" : "") />
+                                <span>|</span>
+
+                            }
+
+                        </td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr> <th colspan="3">Yetki Grubu</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3" style="text-align:center;">
+                            @if (Model.yetkiGrubuID != null)
+                            {
+                                if (User.Identity.Name != Model.id.ToString())
+                                {
+                                    <select style="text-align:center" class="form-control" name="YetkiGrubu">
+                                        <option style="color:cadetblue">@ViewBag.MevcutYetki.yetkiGrubu</option>
+                                        @foreach (var yetki in ViewBag.YetkiGrubu)
+                                        {
+                                            if (ViewBag.MevcutYetki.id != Model.yetkiGrubuID)
+                                            {
+                                                <option value="@yetki.id">@yetki.yetkiGrubu</option>
+                                            }
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    <p>Değiştirilemez: <strong>@ViewBag.MevcutYetki.yetkiGrubu</strong></p>
+                                }
+
+                            }
+                            else
+                            {
+                                <p style="color:indianred">Yetki için "Kullanıcı Ekle" kısmından ilgili kontaktı seçiniz.</p>
+                            }
+
+                        </td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
+
+                        <th colspan="3">Tercih Edilen İletişim</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center" colspan="3">
+                            <select style="text-align:center" class="form-control" name="TercihEdilenIletisimID">
+                                @if (Model.tercihEdilenIletisim == null)
+                                {
+                                    <option style="color:cadetblue">Seçim yapınız</option>
+                                }
+                                else
+                                {
+                                    <option style="color:cadetblue">@ViewBag.MevcutIletisimListesi.tercihEdilenIletisimAdi</option>
+                                }
+                                @foreach (var iletisim in ViewBag.IletisimListesi)
+                                {
+                                    if (Model.tercihEdilenIletisim != iletisim.id)
+                                    {
+                                        <option value="@iletisim.id">@iletisim.tercihEdilenIletisimAdi</option>
+                                    }
+
+                                }
+                            </select>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
+                        <th colspan="3" style="text-align: center">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3" style="text-align:center"><textarea style="text-align:center" name="Description" class="form-control" placeholder="@(string.IsNullOrEmpty(Model.description) ? "Açıklama belirtilmemiş." : Model.description)"></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-warning">KAYDET</button>
+        </form>
+            <br />
+           
+        }
+
+        else
+        {
+    <form method="post" action="@Url.Action("Guncelle","Kontakt")" enctype="multipart/form-data">
+        <input type="hidden" value="@Model.id" name="KontaktID"/>
+        <img src="@Url.Content(Model.Gorsel)" class="rounded-circle" alt="Görsel" width="250" height="200">
+        <p style="text-align:center">@Model.isim adlı <strong>kişinin</strong> bilgilerini düzenlemek istediğiniz yerleri doldurun, değilse boş bırakın.</p>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Fotoğrafı değiştirmek için ilgili görseli yükleyiniz.</label>
+            <input style="position:relative; margin-left:475px" name="Gorsel" type="file" class="form-control-file" id="exampleFormControlFile1">
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead class="bg-primary text-light">
+                <tr>
+                    <th>Adı</th>
+                    <th>Soy İsim</th>
+                    <th>Ülke</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td><input type="text" style="text-align:center" class="form-control" name="Isim" placeholder="@Model.isim" /></td>
+                    <td><input type="text" style="text-align:center" class="form-control" name="SoyIsim" placeholder="@Model.soyAdi" /></td>
+                    <td>@Model.Ulke</td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th>Bağlı Olduğu Organizasyon</th>
+                    <th>E-mail</th>
+                    <th>Cep Telefonu</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @if (Model.organizasyonAtama != 0)
+                    {
+                        <td>
+                            <select style="text-align:center" class="form-control" name="OrganizasyonAtama">
+                                <option style="color:cadetblue">@ViewBag.bagliOlduguOrganizasyon</option>
+                                <option style="color:red" value="0">BAĞIMSIZ YAP</option>
+                                @foreach (var organizasyon in ViewBag.Organizasyonlar)
+                                {
+                                    if (Model.organizasyonAtama != organizasyon.id)
+                                    {
+                                        <option value="@organizasyon.id">@organizasyon.organizasyonAdi</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    }
+                    else
+                    {
+                <td>
+                    <select style="text-align:center" class="form-control" name="OrganizasyonAtama">
+                        <option style="color:cadetblue">ORGANİZASYON ATANMAMIŞ</option>
+                        @foreach (var organizasyon in ViewBag.Organizasyonlar)
+                        {
+                         
+                                <option value="@organizasyon.id">@organizasyon.organizasyonAdi</option>
+                            
+                        }
+                    </select>
+                </td>
+                    }
+
+
+
+                    <td><input type="text" style="text-align:center" class="form-control" name="Email" placeholder="@(string.IsNullOrEmpty(Model.e_mail) ? "Email adresi belirtilmemiş." : Model.e_mail)"></td>
+                    <td><input type="text" style="text-align:center" class="form-control" name="CepTelefonu" placeholder="@(string.IsNullOrEmpty(Model.cepTelefonu) ? "Cep telefonu belirtilmemiş." : Model.cepTelefonu)"></td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th>E-mail - 2</th>
+                    <th>İş Telefonu</th>
+                    <th>İş Telefonu - 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" style="text-align:center" class="form-control" name="Email2" placeholder="@(string.IsNullOrEmpty(Model.e_mail) ? "2. Email adresi belirtilmemiş." : Model.e_mail2)"></td>
+                    <td><input type="text" style="text-align:center" class="form-control" name="IsTelefonu" placeholder="@(string.IsNullOrEmpty(Model.isTelefonu) ? "İş telefonu belirtilmemiş." : Model.isTelefonu)"></td>
+                    <td><input type="text" style="text-align:center" class="form-control" name="IsTelefonu2" placeholder="@(string.IsNullOrEmpty(Model.isTelefonu2) ? "2. iş telefonu belirtilmemiş." : Model.isTelefonu2)"></td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th>Tercih Edilen İletişim</th>
+                    <th>Yetki Grubu</th>
+                    <th>Roler/Unvanlar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                        <td  style="text-align:center">
+                            <select style="text-align:center" class="form-control" name="TercihEdilenIletisimID">
+                                @if (Model.tercihEdilenIletisim == null)
+                                {
+                                    <option style="color:cadetblue">Seçim yapınız</option>
+                                }
+                                else
+                                {
+                                    <option style="color:cadetblue">@ViewBag.MevcutIletisimListesi.tercihEdilenIletisimAdi</option>
+                                }
+                                @foreach (var iletisim in ViewBag.IletisimListesi)
+                                {
+                                    if (Model.tercihEdilenIletisim != iletisim.id)
+                                    {
+                                        <option value="@iletisim.id">@iletisim.tercihEdilenIletisimAdi</option>
+                                    }
+
+                                }
+                            </select>
+                        </td>
+                   
+                    <td>
+                        @if (Model.yetkiGrubuID != null)
+                        {
+                            if (User.Identity.Name != Model.id.ToString())
+                            {
+                                <select style="text-align:center" class="form-control" name="YetkiGrubuID">
+                                    <option style="color:cadetblue">@ViewBag.MevcutYetki.yetkiGrubu</option>
+                                    @foreach (var yetki in ViewBag.YetkiGrubu)
+                                    {
+                                        if (ViewBag.MevcutYetki.id != Model.yetkiGrubuID)
+                                        {
+                                            <option value="@yetki.id">@yetki.yetkiGrubu</option>
+                                        }
+                                    }
+                                </select>
+                            }
+                            else
+                            {
+                                <p>Değiştirilemez: <strong>@ViewBag.MevcutYetki.yetkiGrubu</strong></p>
+                            }
+
+                        }
+                        else
+                        {
+                            <p style="color:indianred">Yetki için "Kullanıcı Ekle" kısmından ilgili kontaktı seçiniz.</p>
+                        }
+
+                    </td>
+                    <td>
+
+                        @foreach (var rol in ViewBag.Roller)
+                        {
+                            bool modulMu = false;
+                            if (ViewBag.RolTablosu.Contains(rol.id))
+                            {
+                                modulMu = true;
+                            }
+
+                            <label for="SecilenRoller">@rol.rolAdi </label>
+                            <input type="checkbox" name="RollerUnvanlar" value="@rol.id" @(modulMu ? "checked" : "") />
+                            <span>|</span>
+
+                        }
+
+                    </td>
+                </tr>
+        </table>
+        <button type="submit" class="btn btn-warning">KAYDET</button>
+    </form>
+        }
+
+        <!--- ORGANİZASYON YA DA NORMAL KULLANICIYA GÖRE DİV ÜZERİNDE BELİRTTİĞİMİZ İDLER İLE HİDE/SHOW YAPAYACAĞIZ.-->
+    </div>
+</div>

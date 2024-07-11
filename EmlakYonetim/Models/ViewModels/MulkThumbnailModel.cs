@@ -13,5 +13,6 @@ namespace EmlakYonetim.Models.ViewModels
         public string FotoUrl { get; set; }
         public string SatisTipi { get; set; }
         public string Fiyat { get; set; }
+        public int SaticiID { get; set; }
     } 
 }

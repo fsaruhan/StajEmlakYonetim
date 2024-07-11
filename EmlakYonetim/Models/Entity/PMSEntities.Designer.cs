@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\fatihs\source\repos\EmlakYonetim_V5\EmlakYonetim\Models\Entity\pmsDB.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\fatihs\Desktop\staj_proje_final\FinalProje\EmlakYonetim\Models\Entity\PMSEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

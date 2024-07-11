@@ -16,6 +16,7 @@ namespace EmlakYonetim.Controllers
     {
         PMSEntities db = new PMSEntities();
         // GET: Mulkler
+        [AllowAnonymous]
         public ActionResult Index()
         {
 
@@ -24,19 +25,25 @@ namespace EmlakYonetim.Controllers
 
             foreach (var mulk in mulkListesi)
             {
-                var ilkFoto = db.t_mulkIMGs.FirstOrDefault(f => f.mulkID == mulk.id);
-                var satisTipi = db.t_mulk.Where(s => s.id == mulk.id).Select(x => x.t_satisTipi.satisTipiAdi).FirstOrDefault();
-                var viewModel = new MulkThumbnailModel
+               
+                
                 {
-                    MulkId = mulk.id,
-                    Baslik = mulk.mulkBaslik ?? string.Empty,
-                    Aciklama = mulk?.aciklama ?? string.Empty, 
-                    FotoUrl = ilkFoto?.imagePath ?? string.Empty, 
-                    Fiyat = mulk.fiyat,
-                    SatisTipi = satisTipi
-                    
-                };
-                MulkViewList.Add(viewModel);
+                    var ilkFoto = db.t_mulkIMGs.FirstOrDefault(f => f.mulkID == mulk.id);
+                    var satisTipi = db.t_mulk.Where(s => s.id == mulk.id).Select(x => x.t_satisTipi.satisTipiAdi).FirstOrDefault();
+                    var viewModel = new MulkThumbnailModel
+                    {
+                        MulkId = mulk.id,
+                        Baslik = mulk.mulkBaslik ?? string.Empty,
+                        Aciklama = mulk?.aciklama ?? string.Empty,
+                        FotoUrl = ilkFoto?.imagePath ?? string.Empty,
+                        Fiyat = mulk.fiyat,
+                        SatisTipi = satisTipi,
+                        SaticiID = mulk.saticiID
+
+                    };
+                    MulkViewList.Add(viewModel);
+                }
+
             }
 
 
@@ -67,7 +74,7 @@ namespace EmlakYonetim.Controllers
             model.Ozellikler = db.t_ozellik.ToList();
             model.BaslikOzellikler = db.t_mulkTipiOzellik.Where(m => m.mulkTipiID == mulkTipiID).Select(m => m.t_ozellik).ToList();
             var satisTipiModuller = db.t_satisTipiModul.Where(s => s.satisTipiID == satisTipiID).Select(m => m.modulID).ToList();
-            model.Moduller = db.t_mulkTipiModul.Where(m => m.mulkTipiID == mulkTipiID && satisTipiModuller.Contains(m.modulID)).Select(m => m.t_modul).ToList();
+            model.Moduller = db.t_mulkTipiModul.Where(m => m.mulktipiID == mulkTipiID && satisTipiModuller.Contains(m.modulID)).Select(m => m.t_modul).ToList();
             model.Gorseller = new List<HttpPostedFileBase>();
             ViewBag.MulkTipiAdi = db.t_mulkTipi.FirstOrDefault(m => m.id == mulkTipiID)?.tipAdi;
             ViewBag.SatisTipiAdi = db.t_satisTipi.FirstOrDefault(s => s.id == satisTipiID)?.satisTipiAdi;
@@ -76,14 +83,31 @@ namespace EmlakYonetim.Controllers
         [HttpPost]
         public ActionResult MulkEkle(MulkViewModel model)
         {
+            var yeniAdres = new t_mulkAdres()
+            {
+                sokakCadde = model.SokakCadde,
+                apartmanNo = model.ApartmanNo,
+                il = model.Il,
+                ilce = model.Ilce,
+                ulke = model.Ulke,
+                postaKodu = model.PostaKodu,
+                lat = model.Latitude,
+                lonq = model.Longitude
+            };
+            db.t_mulkAdres.Add(yeniAdres);
+            db.SaveChanges();
 
             var yeniMulk = new t_mulk()
             {
+                
                 satisTipiID = model.satisTipiID,
                 mulkTipiID = model.mulkTipiID,
                 mulkBaslik = model.MulkBaslik,
                 aciklama = model.MulkAciklama,
-                fiyat = model.MulkFiyat
+                fiyat = model.MulkFiyat,
+                adresID = yeniAdres.id,
+                saticiID = model.SaticiID
+               
             };
             db.t_mulk.Add(yeniMulk);
             db.SaveChanges();
@@ -170,6 +194,39 @@ namespace EmlakYonetim.Controllers
             db.SaveChanges();
             return RedirectToAction("IlanDetaylar", new { mulkID = yeniMulkID});
         }
+        public ActionResult IlanSil(int MulkID)
+        {
+            var mulk = db.t_mulk.FirstOrDefault(x => x.id == MulkID);
+            var mulkOzellik = db.t_mulkOzellik.Where(x => x.mulkID == MulkID).ToList();
+            var mulkModul = db.t_mulkModul.Where(x => x.mulkID == MulkID).ToList();
+            var mulkIMGs = db.t_mulkIMGs.Where(x => x.mulkID == MulkID).ToList();
+            var adres = db.t_mulkAdres.FirstOrDefault(x => x.id == mulk.adresID);
+            if (mulkIMGs != null)
+            {
+                foreach (var foto in mulkIMGs)
+                {
+                    string Kaldir = Server.MapPath(foto.imagePath);
+                    if (System.IO.File.Exists(Kaldir))
+                    {
+
+                        System.IO.File.Delete(Kaldir);
+                    }
+
+                }
+                db.t_mulkIMGs.RemoveRange(mulkIMGs);
+                
+            }
+           
+            db.t_mulkOzellik.RemoveRange(mulkOzellik);
+            db.t_mulkModul.RemoveRange(mulkModul);
+            db.t_mulk.Remove(mulk);
+            db.SaveChanges();
+            db.t_mulkAdres.Remove(adres);
+
+            db.SaveChanges();
+            
+            return View("Index");
+        }
     
         // İlanların düzenleneceği actionlar...
         public ActionResult IlanDuzenle(int MulkID)
@@ -181,8 +238,14 @@ namespace EmlakYonetim.Controllers
             var mulkModuller = db.t_mulkModul.Where(y => y.mulkID == MulkID).ToList();
             var tumOzellikler = db.t_ozellik.ToList();
             var mulkTipiOzellik = db.t_mulkTipiOzellik.Include("t_ozellik").ToList();
-            var mulkTipiModul = db.t_mulkTipiModul.Where(x => x.mulkTipiID == mulk.mulkTipiID).ToList();
-           
+            var mulkTipiModul = db.t_mulkTipiModul.Where(x => x.mulktipiID == mulk.mulkTipiID).ToList();
+            var adres = db.t_mulk.Where(x => x.id == MulkID).Select(a => a.t_mulkAdres).FirstOrDefault();
+            var kullanicilar = db.t_kullanici.Include("t_contact").ToList();
+            var mevcutKullanici = db.t_mulk
+            .Where(m => m.id == MulkID)
+            .Select(m => m.t_contact)
+            .FirstOrDefault();
+
 
             var model = new MulkDuzenleViewModel()
             {
@@ -195,16 +258,40 @@ namespace EmlakYonetim.Controllers
                 TumModuller = satisTipi,
                 MulkTipiOzellik = mulkTipiOzellik,
                 MulkTipiID = mulk.mulkTipiID,
-               
+                SokakCadde = adres.sokakCadde,
+                ApartmanNo = adres.apartmanNo,
+                Il = adres.il,
+                Ilce = adres.ilce,
+                Ulke = adres.ulke,
+                PostaKodu = adres.postaKodu,
+                Latitude = adres.lat,
+                Longitude = adres.lonq,
+                Kullanicilar = kullanicilar,
+                MevcutKullanici = mevcutKullanici
             };
-
+           
             return View(model);
         }
+        public ActionResult SaticiAta(int? SaticiID, int? mulkID)
+        {
+            if (SaticiID != null && mulkID != null)
+            {
+                var mulkSatici = db.t_mulk.FirstOrDefault(x => x.id == mulkID);
+                mulkSatici.saticiID = SaticiID.Value;
+                db.SaveChanges();
+                return RedirectToAction("IlanDuzenle", new { mulkID = mulkID.Value });
+            }
+            else
+            {
+                return RedirectToAction("IlanDuzenle", new { mulkID = mulkID.Value });
+            }
 
+            
+        }
         public ActionResult TekFotoSil(int FotoID)
         {
             var foto = db.t_mulkIMGs.FirstOrDefault(x => x.id == FotoID);
-
+            var mulkID = foto.mulkID;
             if (foto != null)
             {
                 var filePath = Server.MapPath(foto.imagePath);
@@ -218,12 +305,12 @@ namespace EmlakYonetim.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("IlanDuzenle");
+            return RedirectToAction("IlanDuzenle", new { mulkID = mulkID });
         }
         public ActionResult IlanFotolariSil(int MulkID)
         {
             var ilanFotolari = db.t_mulkIMGs.Where(x => x.mulkID == MulkID).ToList();
-
+            var mulkID = MulkID;
             if (ilanFotolari.Any())
             {
                 foreach (var foto in ilanFotolari)
@@ -238,7 +325,7 @@ namespace EmlakYonetim.Controllers
                 db.t_mulkIMGs.RemoveRange(ilanFotolari);
                 db.SaveChanges();
 
-                return RedirectToAction("IlanDuzenle");
+                return RedirectToAction("IlanDuzenle", new { mulkID = mulkID });
             }
             else
             {
@@ -283,7 +370,7 @@ namespace EmlakYonetim.Controllers
                         }
                     }
                 }
-                return RedirectToAction("IlanDuzenle");
+                return RedirectToAction("IlanDuzenle", new { mulkID = mulkID });
             }
             else
             {
@@ -306,13 +393,188 @@ namespace EmlakYonetim.Controllers
                 anaFotograf.imagePath = yeniAnaFotograf.imagePath;
                 yeniAnaFotograf.imagePath = tempFoto.imagePath;
                 db.SaveChanges();
-                return RedirectToAction("IlanDuzenle");
+                return RedirectToAction("IlanDuzenle",  new { MulkID = MulkID }); 
             }
             else
             {
                 return HttpNotFound();
             }
             
+        }
+        public ActionResult IlanYeniKaydet(MulkDuzenleViewModel model)
+        {
+            if (model.MulkID != 0)
+            {
+                var mulkID = model.MulkID;
+                var mulkBaslik = model.MulkBaslik;
+                var mulkAciklama = model.MulkAciklama;
+                var ozellikler = model.SecilenOzellikler;
+                var dropDownModuller = model.DropDownModulID;
+                var inputModuller = model.InputModulID;
+                var girilenDeger = model.GirilenDeger;
+                var secilenDeger = model.SecilenDeger;
+                var yeniInputModuller = model.YeniInputModulID;
+                var yeniDropDownModuller = model.YeniDropDownModulID;
+                var yeniGirilenDeger = model.YeniGirilenDeger;
+                var yeniSecilenDeger = model.YeniSecilenDeger;
+                var sokakCadde = model.SokakCadde;
+                var apartmanNo = model.ApartmanNo;
+                var ilce = model.Ilce;
+                var il = model.Il;
+                var ulke = model.Ulke;
+                var postaKodu = model.PostaKodu;
+                var lonq = model.Longitude;
+                var lat = model.Latitude;
+                var mevcutOzellikler = db.t_mulkOzellik.ToList();
+
+
+                if (mulkBaslik != null && mulkAciklama != null)
+                {
+                    var mevcutMulk = db.t_mulk.FirstOrDefault(x => x.id == mulkID);
+                    mevcutMulk.aciklama = mulkAciklama;
+                    mevcutMulk.mulkBaslik = mulkBaslik;
+                }
+                if (mulkID != 0)
+                {
+                    var mulkAdres = db.t_mulk.Where(x => x.id == mulkID).Select(x => x.t_mulkAdres).FirstOrDefault();
+                    if (sokakCadde != null)
+                    {
+                        mulkAdres.sokakCadde = sokakCadde;
+                    }
+                    if (apartmanNo != null)
+                    {
+                        mulkAdres.apartmanNo = apartmanNo;
+                    }
+                    if (il != null)
+                    {
+                        mulkAdres.il = il;
+                    }
+                    if (ilce != null)
+                    {
+                        mulkAdres.ilce = ilce;
+                    }
+                    if (ulke != null)
+                    {
+                        mulkAdres.ulke = ulke;
+                    }
+                    if (postaKodu != null)
+                    {
+                        mulkAdres.postaKodu = postaKodu;
+                    }
+                    if (lat != null)
+                    {
+                        mulkAdres.lat = lat;
+                    }
+                    if (lonq != null)
+                    {
+                        mulkAdres.lonq = lonq;
+                    }
+                }
+
+                if (ozellikler != null)
+                {
+                    foreach (var ozellikid in ozellikler)
+                    {
+                        bool ozellikAyikla = mevcutOzellikler.Any(x => x.ozellikID == ozellikid && x.mulkID == mulkID);
+                        if (!ozellikAyikla)
+                        {
+                            var yeniMulkOzellik = new t_mulkOzellik()
+                            {
+                                mulkID = mulkID,
+                                ozellikID = ozellikid
+                            };
+                            db.t_mulkOzellik.Add(yeniMulkOzellik);
+                        }
+
+                    }
+                    var kaldirilacaklar = mevcutOzellikler.Where(x => !ozellikler.Contains(x.ozellikID) && x.mulkID == mulkID).ToList();
+                    db.t_mulkOzellik.RemoveRange(kaldirilacaklar);
+                }
+                else
+                {
+                    var topluSil = db.t_mulkOzellik.Where(x => x.mulkID == mulkID).ToList();
+                    db.t_mulkOzellik.RemoveRange(topluSil);
+                }
+
+                if (dropDownModuller != null)
+                {
+                    for (int i = 0; i < dropDownModuller.Count; i++)
+                    {
+                        var modulid = dropDownModuller[i];
+                        var modul = db.t_mulkModul.FirstOrDefault(x => x.modulID == modulid && x.mulkID == mulkID);
+ 
+                        
+                        if (modul != null && !string.IsNullOrEmpty(secilenDeger[i]))
+                        {
+                            modul.deger = secilenDeger[i];
+                            
+                        }
+                       
+                       
+                    }
+                }
+
+
+                if (inputModuller != null)
+                {
+                    for (int i = 0; i < inputModuller.Count; i++)
+                    {
+                        var modulid = inputModuller[i];
+                        var modul = db.t_mulkModul.FirstOrDefault(x => x.modulID == modulid && x.mulkID == mulkID);
+
+                        if (modul != null && !string.IsNullOrEmpty(girilenDeger[i]))
+                        {
+                            modul.deger = girilenDeger[i];
+                           
+                        }
+                    }
+                }
+                if (yeniDropDownModuller != null)
+                {
+                    for (int i = 0; i < yeniDropDownModuller.Count; i++)
+                    {
+                        var modulid = yeniDropDownModuller[i];
+                        var modul = db.t_mulkModul.FirstOrDefault(x => x.modulID == modulid && x.mulkID == mulkID);
+                        if (modul == null && !string.IsNullOrEmpty(yeniSecilenDeger[i]))
+                        {
+                            var yeniModul = new t_mulkModul()
+                            {
+                                mulkID = mulkID,
+                                modulID = modulid,
+                                deger = yeniSecilenDeger[i]
+                            };
+                            db.t_mulkModul.Add(yeniModul);
+                        }
+                    }
+                }
+                if (yeniInputModuller != null)
+                {
+                    for (int i = 0; i < yeniInputModuller.Count; i++)
+                    {
+                        var modulid = yeniInputModuller[i];
+                        var modul = db.t_mulkModul.FirstOrDefault(x => x.modulID == modulid && x.mulkID == mulkID);
+                        if (modul == null && !string.IsNullOrEmpty(yeniGirilenDeger[i]))
+                        {
+                            var yeniModul = new t_mulkModul()
+                            {
+                                mulkID = mulkID,
+                                modulID = modulid,
+                                deger = yeniGirilenDeger[i]
+                            };
+                            db.t_mulkModul.Add(yeniModul);
+                        }
+                    }
+                }
+
+                db.SaveChanges();
+            }
+            
+            else
+            {
+                HttpNotFound();
+            }
+
+            return RedirectToAction("IlanDuzenle", new { mulkID = model.MulkID });
         }
         // Askıya alınan özellikler
         public ActionResult FotograflariDuzenle(int mulkID)
@@ -336,6 +598,7 @@ namespace EmlakYonetim.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult IlanDetaylar(int mulkID)
         {
             var moduller = db.t_mulkModul
@@ -354,11 +617,16 @@ namespace EmlakYonetim.Controllers
             var ozellikler = db.t_mulkOzellik.Where(m => m.mulkID == mulkID).Select(o => o.t_ozellik).ToList();
             var anaOzellikler = db.t_mulk.Where(m => m.id == mulkID)
                 .Join(db.t_mulkTipiOzellik, m => m.mulkTipiID, mto => mto.mulkTipiID, (m, mto) => mto.t_ozellik).ToList();
+            var adres = db.t_mulk.Where(x => x.id == mulkID).Select(a => a.t_mulkAdres).FirstOrDefault();
+            var mulk = db.t_mulk.FirstOrDefault(x => x.id == mulkID);
+            var saticiBilgileri = db.t_contact.FirstOrDefault(x => x.id == mulk.saticiID);
             ViewBag.Ozellikler = ozellikler;
             ViewBag.AnaOzellikler = anaOzellikler;
             ViewBag.Detaylar = detaylar;
             ViewBag.Moduller = moduller;
             ViewBag.SatisTipi = db.t_mulk.Where(x => x.id == mulkID).Select(x => x.t_satisTipi.satisTipiAdi).FirstOrDefault();
+            ViewBag.Adres = adres;
+            ViewBag.SaticiBilgileri = saticiBilgileri;
      
             return View(gorseller);
         }

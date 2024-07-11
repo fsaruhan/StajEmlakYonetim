@@ -1,27 +1,80 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a href="#" class="navbar-brand">
-            <img src="~/imgs/das/logo.png" style="width:175px;" />
-        </a>
-        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a href="@Url.Action("Index", "Kontakt")" class="nav-item nav-link">İletişim Listesi</a>
-               
+﻿@using EmlakYonetim.Models.Entity;
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    PMSEntities db = new PMSEntities();
+    var kullaniciId = Convert.ToInt32(User.Identity.Name);
+    var kullanici = db.t_contact.FirstOrDefault(x => x.id == kullaniciId);
+    var kullaniciAdi = kullanici.organizasyonMu ? kullanici.organizasyonAdi : kullanici.isim;
+    ViewBag.KullaniciAdi = kullaniciAdi;
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                <img src="~/imgs/das/logo.png" style="width:175px;" />
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a href="@Url.Action("Index", "Kontakt")" class="nav-item nav-link">İletişim Listesi</a>
+
+                </div>
+                <div class="nav-item nav-link dropdown">
+                    <a href="#" class="nav-item nav-link dropdown-toggle" data-toggle="dropdown">Mülkler</a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Index", "Mulk")" class="dropdown-item">Mülk Listesi</a>
+                        <a href="@Url.Action("Ekle", "Mulk")" class="dropdown-item">Mülk Ekle</a>
+                        <a href="@Url.Action("Index", "Modul")" class="dropdown-item">Modüller</a>
+                        <a href="@Url.Action("Index", "Ozellik")" class="dropdown-item">Özellikler</a>
+                    </div>
+                </div>
+                @if (kullanici.yetkiGrubuID == 1)
+                {
+                    <div class="navbar-nav">
+                        <a href="@Url.Action("Index", "Kullanici")" class="nav-item nav-link">Kullanıcılar</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link disabled">
+                            <s>Kullanıcılar</s>
+                        </a>
+                    </div>
+                }
+
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-item nav-link" style="color:red"><strong>Hoşgeldiniz, </strong>@ViewBag.KullaniciAdi</a>
+                    <a href="@Url.Action("Logout", "Security")" class="nav-item nav-link">Çıkış Yap</a>
+                </div>
             </div>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Mülkler</a>
-                <div class="dropdown-menu">
-                    <a href="@Url.Action("Index", "Mulk")" class="dropdown-item">Mülk Listesi</a>
-                    <a href="@Url.Action("Index", "Modul")" class="dropdown-item">Modüller</a>
-                    <a href="@Url.Action("Index", "Ozellik")" class="dropdown-item">Özellikler</a>
+        </div>
+    </nav>
+}
+else
+{
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                <img src="~/imgs/das/logo.png" style="width:175px;" />
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a href="@Url.Action("Index", "Mulk")" class="nav-item nav-link">Mülk Listesi</a>
+
                 </div>
             </div>
             <div class="navbar-nav ms-auto">
-                <a href="#" class="nav-item nav-link">Login</a>
+                <a class="nav-item nav-link" style="color:gold"><strong>Hoşgeldiniz, </strong>Misafir</a>
+                <a href="@Url.Action("Login", "Security")" class="nav-item nav-link">Giriş Yap</a>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
+}
+

@@ -18,6 +18,29 @@ namespace EmlakYonetim.Models.ViewModels
         public List <t_ozellik> TumOzellikler { get; set; }
         public List <t_mulkTipiOzellik> MulkTipiOzellik { get; set; }
         public List <t_satisTipi> SatisTipi { get; set; }
+        public List<int> SecilenOzellikler { get; set; }
+        public string MulkBaslik { get; set; }
+        public string MulkAciklama { get; set; }
+        public List<int> DropDownModulID { get; set; }
+        public List<int> InputModulID { get; set; }
+        public List<string> GirilenDeger { get; set; }
+        public List<string> SecilenDeger { get; set; }
+        public List<int> YeniDropDownModulID { get; set; }
+        public List<int> YeniInputModulID { get; set; }
+        public List<string> YeniGirilenDeger { get; set; }
+        public List<string> YeniSecilenDeger { get; set; }
         public int MulkTipiID { get; set; }
+        public string SokakCadde { get; set; }
+        public string ApartmanNo { get; set; }
+        public string Il { get; set; }
+        public string Ilce { get; set; }
+        public string Ulke { get; set; }
+        public string PostaKodu { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string SaticiFoto { get; set; }
+        public List<t_kullanici> Kullanicilar { get; set; }
+        public t_contact MevcutKullanici { get; set; }
     } 
 }
+
